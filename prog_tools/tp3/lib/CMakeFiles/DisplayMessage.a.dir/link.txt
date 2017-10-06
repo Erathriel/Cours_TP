@@ -1,0 +1,2 @@
+/usr/bin/ar qc libDisplayMessage.a.a  CMakeFiles/DisplayMessage.a.dir/DisplayMessage.cpp.o
+/usr/bin/ranlib libDisplayMessage.a.a

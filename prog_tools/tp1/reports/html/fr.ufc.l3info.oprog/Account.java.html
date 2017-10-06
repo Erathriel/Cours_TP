@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Account.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">fr.ufc.l3info.oprog</a> &gt; <span class="el_source">Account.java</span></div><h1>Account.java</h1><pre class="source lang-java linenums">package fr.ufc.l3info.oprog;
+
+
+/**
+ *  Simplified class for a bank account.
+ *  @author Frederic Dadeau (frederic.dadeau@univ-fcomte.fr)
+ */
+public class Account {
+    
+    /** Balance of the card */
+    int balance;
+    
+    /** Constructor. Creates an account with the initial balance given in parameter. 
+     *  @param initialBalance The initial balance of the account to be created.
+     */
+<span class="fc" id="L16">    public Account(int initialBalance) {</span>
+<span class="fc" id="L17">        balance = initialBalance;</span>
+<span class="fc" id="L18">    }</span>
+    
+    /**
+     *  Credits the card with the amount given in parameter. 
+     *  @param  amount   the amount to credit the account with.
+     */
+    public void credit(int amount) {
+<span class="fc" id="L25">        balance += amount;</span>
+<span class="fc" id="L26">    }</span>
+    
+    /**
+     *  Withdraws the amount in parameter from the account.
+     *  @param  amount  the amount to withdraw from the account
+     *  @return         true if the transaction succeeded, false otherwise.
+     */
+    public boolean debit(int amount) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (this.canWithdraw(amount)) {</span>
+<span class="fc" id="L35">            balance -= amount;</span>
+<span class="fc" id="L36">            return true;</span>
+        }
+<span class="fc" id="L38">        return false;</span>
+    }
+    
+    
+    /**
+     *  Checks if the amount in parameter can be withdrawn from the account. 
+     *  @param amount   the amount to withdraw
+     *  @return         true if the transaction can be performed, false otherwise.
+     */
+    public boolean canWithdraw(int amount) {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        return balance &gt;= amount;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.10.201708291135</span></div></body></html>

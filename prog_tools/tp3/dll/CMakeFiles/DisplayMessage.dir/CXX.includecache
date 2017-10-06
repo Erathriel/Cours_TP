@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/afs/deptinfo-st.univ-fcomte.fr/users/gnoro/Documents/Outils_prog/tp3/dll/DisplayMessage.cpp
+stdlib.h
+-
+stdio.h
+-
+unistd.h
+-
+

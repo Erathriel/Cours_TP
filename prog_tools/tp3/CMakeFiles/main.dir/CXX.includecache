@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/afs/deptinfo-st.univ-fcomte.fr/users/gnoro/Documents/Outils_prog/tp3/./lib/DisplayMessage.h
+stdlib.h
+-
+stdio.h
+-
+unistd.h
+-
+
+/afs/deptinfo-st.univ-fcomte.fr/users/gnoro/Documents/Outils_prog/tp3/hello_world.cpp
+stdlib.h
+-
+stdio.h
+-
+unistd.h
+-
+string.h
+-
+./lib/DisplayMessage.h
+/afs/deptinfo-st.univ-fcomte.fr/users/gnoro/Documents/Outils_prog/tp3/./lib/DisplayMessage.h
+windows.h
+-
+

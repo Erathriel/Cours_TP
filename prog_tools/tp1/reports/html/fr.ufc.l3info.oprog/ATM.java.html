@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ATM.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">fr.ufc.l3info.oprog</a> &gt; <span class="el_source">ATM.java</span></div><h1>ATM.java</h1><pre class="source lang-java linenums">package fr.ufc.l3info.oprog;
+
+/**
+ *  Class describing the automated teller machine.
+ *  @author Frederic Dadeau (frederic.dadeau@univ-fcomte.fr)
+ */
+public class ATM {
+
+    /** Possible states of the ATM */
+<span class="fc" id="L10">    enum STATES {</span>
+            /** Waiting for a card */
+<span class="fc" id="L12">            idle,</span>
+            /** Waiting for pin input */
+<span class="fc" id="L14">            input_pin,</span>
+            /** Waiting for the withdrawl amount */
+<span class="fc" id="L16">            input_amount,</span>
+            /** Waiting for the card to be taken back */
+<span class="fc" id="L18">            card_ejected,</span>
+            /** Waiting for the bills to be taken */
+<span class="fc" id="L20">            bills_ejected</span>
+    }
+    
+    /** Current withdrawal request */
+    private int currentRequest;
+    
+    /** Current state of the ATM */
+    private STATES state;
+    
+    /** Current card inserted in the ATM */
+    private Card card;
+    
+    /** Bills that are made available for the client */
+    private int[] bills;
+    
+    
+    /**
+     *  Class constructor, initializes the ATM with a given amount of money. Starts the ATM in the idle state.
+     */
+<span class="fc" id="L39">    public ATM() {</span>
+<span class="fc" id="L40">        state = STATES.idle;</span>
+<span class="fc" id="L41">        card = null;</span>
+<span class="fc" id="L42">        bills = null;</span>
+<span class="fc" id="L43">        currentRequest = 0;</span>
+<span class="fc" id="L44">    }</span>
+    
+    /**
+     *  Insert card and checks that the card is valid. Only applicable when the ATM is in the idle state. Upon correct execution, expects the user to input his pin code.
+     *  @param     c the card inserted in the ATM
+     *  @return    0 if the inserted card is valid. -1 if a card is already in the ATM, -2 if the card is blocked, it is then ejected.
+     *  @exception NullCardException    Exception thrown if parameter c is null
+     */
+    public int insertCard(Card c) throws NullCardException {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (c == null) {</span>
+<span class="fc" id="L54">            throw new NullCardException();</span>
+        }
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (state != STATES.idle) {</span>
+<span class="fc" id="L57">            return -1;</span>
+        }
+<span class="fc" id="L59">        card = c;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (card.isBlocked()) {</span>
+<span class="fc" id="L61">            state = STATES.card_ejected;</span>
+<span class="fc" id="L62">            return -2;</span>
+        }
+<span class="fc" id="L64">        state = STATES.input_pin;</span>
+<span class="fc" id="L65">        return 0;</span>
+    }
+    
+    
+    /**
+     *  Tries to identify the card holder by checking his pin. If he authenticates with success, expects then the user to choose the amount he wants to withdraw.
+     *  @param      p   the pin code to check
+     *  @return     0   if the card holder is authenticated,
+     *              -1  if the ATM is in the wrong state,
+     *              -2  if the authentication failed, 
+     *              -3  if the card was blocked and is now ejected.
+     */
+    public int inputPin(int p) {
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (state != STATES.input_pin) {</span>
+<span class="fc" id="L79">            return -1;</span>
+        }
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (card.checkPin(p)) {</span>
+<span class="fc" id="L82">            state = STATES.input_amount;</span>
+<span class="fc" id="L83">            return 0;</span>
+        }
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (card.isBlocked()) {</span>
+<span class="fc" id="L86">            state = STATES.card_ejected;</span>
+<span class="fc" id="L87">            return -3;</span>
+        }
+<span class="fc" id="L89">        return -2;</span>
+        
+    }
+
+    /** 
+     *  Selects the amount to withdraw. If the amount is correct, the ATM ejects the card.
+     *  @param a    the amount to withdraw. Possible values are 0 (cancel), 20, 30, 40, 50, 80, 100.
+     *  @return 0 if the selected amount is valid, -1 if the ATM is not in the appropriate state, -2 if the amount is not in the list of the possible values, -3 if the amount is more than the balance of card's account.
+     */
+    public int chooseAmount(int a) {
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (state != STATES.input_amount) {</span>
+<span class="nc" id="L100">            return -1;</span>
+        }
+<span class="nc bnc" id="L102" title="All 14 branches missed.">        if (a != 0 &amp;&amp; a != 20 &amp;&amp; a != 30 &amp;&amp; a != 40 &amp;&amp; a != 50 &amp;&amp; a != 80 &amp;&amp; a != 100) {</span>
+<span class="nc" id="L103">            return -2;</span>
+        }
+<span class="nc bnc" id="L105" title="All 4 branches missed.">        if (a == 0 || card.getAccount().canWithdraw(a)) {</span>
+<span class="nc" id="L106">            currentRequest = a;</span>
+<span class="nc" id="L107">            state = STATES.card_ejected;</span>
+<span class="nc" id="L108">            return 0;</span>
+        }
+<span class="nc" id="L110">        return -3;</span>
+    }
+    
+    /**
+     *  Takes back the card when it has been ejected. If a transaction was initiated, the bills are then ejected. Otherwise the ATM goes back to the idle state.
+     *  @return     the card that was ejected. null if the ATM was in the wrong state.
+     */
+    public Card takeCard() {
+<span class="nc" id="L118">        Card r = card;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (state != STATES.card_ejected) {</span>
+<span class="nc" id="L120">            return null;</span>
+        }
+<span class="nc" id="L122">        Account acc = card.getAccount();</span>
+<span class="nc" id="L123">        card = null;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (currentRequest &gt; 0) {</span>
+<span class="nc" id="L125">            acc.debit(currentRequest);</span>
+<span class="nc" id="L126">            prepareBills();</span>
+<span class="nc" id="L127">            state = STATES.bills_ejected;</span>
+        }
+        else {
+<span class="nc" id="L130">            state = STATES.idle;</span>
+        }
+<span class="nc" id="L132">        return r;</span>
+    }
+    
+    
+    /** 
+     *  Prepare the bills. Computes the number of bills of each kind to be given to the client.
+     */
+    private void prepareBills() {
+<span class="nc" id="L140">        int nb10 = 0;</span>
+<span class="nc" id="L141">        int nb20 = 0;</span>
+<span class="nc" id="L142">        int nb50 = 0;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (currentRequest &gt; 50) {</span>
+<span class="nc" id="L144">            nb50 = currentRequest / 50;</span>
+<span class="nc" id="L145">            currentRequest = currentRequest % 50;</span>
+        }
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (currentRequest &gt; 20) {</span>
+<span class="nc" id="L148">            nb20 = currentRequest / 20;</span>
+<span class="nc" id="L149">            currentRequest = currentRequest % 20;</span>
+        }
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (currentRequest &gt; 10) {</span>
+<span class="nc" id="L152">            nb10 = 2;</span>
+        }
+        else {
+<span class="nc" id="L155">            nb10 = 1;</span>
+        }
+<span class="nc" id="L157">        bills = new int[nb50 + nb20 + nb10];</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        for (int i=0; i &lt; nb50; i++) {</span>
+<span class="nc" id="L159">            bills[i] = 50;</span>
+        }
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        for (int i=0; i &lt; nb20; i++) {</span>
+<span class="nc" id="L162">            bills[nb50+i] = 20;</span>
+        }
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        for (int i=0; i &lt; nb10; i++) {</span>
+<span class="nc" id="L165">            bills[nb50+nb20+i] = 10;</span>
+        }
+<span class="nc" id="L167">        currentRequest = 0;</span>
+<span class="nc" id="L168">    }</span>
+    
+    
+    /** 
+     *  The user takes the bills from the ATM. Upon successful execution, the ATM goes back to the idle state.
+     *  @return     An array of bill amounts. null if the ATM is in the wrong state
+     */
+    public int[] takeBills() {
+<span class="nc bnc" id="L176" title="All 2 branches missed.">        if (state != STATES.bills_ejected) {</span>
+<span class="nc" id="L177">            return null;</span>
+        }
+<span class="nc" id="L179">        int[] r = bills;</span>
+<span class="nc" id="L180">        bills = null;</span>
+<span class="nc" id="L181">        state = STATES.idle;</span>
+<span class="nc" id="L182">        return r;</span>
+    }
+    
+    
+    /**
+     *  Nested class for null values used when inserting card.
+     */
+    public class NullCardException extends Exception {
+<span class="fc" id="L190">        public NullCardException() {</span>
+<span class="fc" id="L191">            super(&quot;Tried to insert a null card&quot;);</span>
+<span class="fc" id="L192">        }</span>
+    }
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.10.201708291135</span></div></body></html>

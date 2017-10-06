@@ -1,0 +1,81 @@
+package tests;
+
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.Test;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+
+
+import fr.ufc.l3info.oprog.*;
+
+public class testATM {
+    
+	ATM atm = null;
+    
+	@Before 
+	public void setUp() {
+		atm = new ATM();
+	}
+    
+	// Test an exception !
+	@Test(expected=ATM.NullCardException.class)
+	public void testInsertCard0() throws ATM.NullCardException {
+		int r = atm.insertCard(null);
+	}
+
+	@Test
+	public void testInsertCard1() throws ATM.NullCardException {
+		Card mockedCard = Mockito.mock(Card.class);
+		Mockito.when(mockedCard.isBlocked()).thenReturn(false);
+		assertEquals(atm.insertCard(mockedCard),0);
+		assertEquals(atm.insertCard(mockedCard),-1);
+	}
+	@Test
+	public void testInsertCard2() throws ATM.NullCardException {
+		Card mockedCard = Mockito.mock(Card.class);
+		Mockito.when(mockedCard.isBlocked()).thenReturn(true);
+		assertEquals(atm.insertCard(mockedCard),-2);
+	}
+	@Test
+	public void testInputPin0() {
+		assertEquals(atm.inputPin(0000), -1);
+	}
+	@Test
+	public void testInputPin1() throws ATM.NullCardException {
+		Card mockedCard = Mockito.mock(Card.class);
+		Mockito.when(mockedCard.isBlocked()).thenReturn(false);
+		atm.insertCard(mockedCard);
+		Mockito.when(mockedCard.checkPin(0000)).thenReturn(true);
+		assertEquals(atm.inputPin(0000), 0);
+	}
+	@Test
+	public void testInputPin2() throws ATM.NullCardException {
+		Card mockedCard = Mockito.mock(Card.class);
+		Mockito.when(mockedCard.isBlocked()).thenReturn(false);
+		atm.insertCard(mockedCard);
+		Mockito.when(mockedCard.checkPin(0000)).thenReturn(false);
+		assertEquals(atm.inputPin(0000), -2);
+	}
+	@Test
+	public void testInputPin3() throws ATM.NullCardException {
+		Card mockedCard = Mockito.mock(Card.class);
+		atm.insertCard(mockedCard);
+		Mockito.when(mockedCard.isBlocked()).thenReturn(true);
+		Mockito.when(mockedCard.checkPin(0000)).thenReturn(false);
+		assertEquals(atm.inputPin(0000), -3);
+	}
+}
+
+
+
+
+
+
+
+
+
+
