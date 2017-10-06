@@ -1,0 +1,3 @@
+header :
+	gcc fa.h fa.c testfa.c -c
+
