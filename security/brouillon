@@ -1,0 +1,11 @@
+entrée : 
+	phrase
+
+traitement :
+	chercher la lettre plus présente dans la phrase
+	considéré que c'est le E et calculer le décalage
+	retourner le message avec le décalage supposé
+	tester l'appartenance de chaque mot dans le dictionnaire
+
+sortie phrase décrypter
+	
