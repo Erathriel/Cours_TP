@@ -11,6 +11,8 @@ JACOCO_AGENT=./libs/jacocoagent.jar
 REPORT=./reports
 JACOCO_CLI=./libs/jacococli.jar
 
+all : appli tests runtests docs report coverage
+
 appli :
 	$(JAVAC) -d $(BIN) $(SRC)/appli/fr/ufc/l3info/oprog/*.java
 tests :

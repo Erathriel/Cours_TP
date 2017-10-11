@@ -34,6 +34,11 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	for (int i = 0; i < strlen(motSansDouble); ++i)
+	{
+		int 
+	}
+
 	printf("%s\n", motSansDouble);
 
 	free(motSansDouble);

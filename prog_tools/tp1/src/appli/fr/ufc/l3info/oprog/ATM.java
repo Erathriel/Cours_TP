@@ -140,19 +140,19 @@ public class ATM {
         int nb10 = 0;
         int nb20 = 0;
         int nb50 = 0;
-        if (currentRequest > 50) {
+        if (currentRequest >= 50) {
             nb50 = currentRequest / 50;
             currentRequest = currentRequest % 50;
         }
-        if (currentRequest > 20) {
+        if (currentRequest >= 20) {
             nb20 = currentRequest / 20;
             currentRequest = currentRequest % 20;
         }
-        if (currentRequest > 10) {
-            nb10 = 2;
+        if (currentRequest >= 10) {
+            nb10 = 1;
         }
         else {
-            nb10 = 1;
+            nb10 = 0;
         }
         bills = new int[nb50 + nb20 + nb10];
         for (int i=0; i < nb50; i++) {
