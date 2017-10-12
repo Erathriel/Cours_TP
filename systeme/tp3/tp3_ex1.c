@@ -1,7 +1,7 @@
 /***************************************************
 
 Fichier : tp3_ex1.c
-Date de création : 03 octobre 2017
+Date de creation : 03 octobre 2017
 Auteur : NORO Geoffrey & PEGEOT Antoine
 
 ***************************************************/
@@ -12,6 +12,8 @@ Auteur : NORO Geoffrey & PEGEOT Antoine
 #include <time.h>
 #include <pthread.h>
 
+// creation et initialisation du mutex
+pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
 
 /* definition d'une structure arguments permettant de passer en paramêtre 
 à un thread plusieurs arguments */
@@ -21,18 +23,22 @@ typedef struct
 	int max;
 	int taille;
 	int nLigne;
+	int somme;
 	int **matrix;
-	mutex_t mutex;
+	
 } arguments;
 
 void *thread(void *arg){
 	arguments *args = (arguments *) arg;
+	pthread_mutex_lock(&mutex); // verrouillage du mutex
 	int *newligne=calloc(args->taille,sizeof(int));
 	for(int j=0; j<args->taille; j++){
 		newligne[j]=rand()%(args->max-args->min+1) + args->min;
 		printf("[%d]", newligne[j] );
+		args->somme+=newligne[j];
 	}
 	printf("\n");
+	pthread_mutex_unlock(&mutex); // deverrouillage du mutex
 	pthread_exit(newligne);
 }
 
@@ -40,8 +46,8 @@ void *thread(void *arg){
 int createThread(pthread_t *t, arguments *args){
 
 	int ret = pthread_create(t, NULL, thread, (void *) args);
-	/* Q2 : Pour définir un nombre maximal d'affichage il suffit de
-	remplacer le dernier paramètre de pthread_create par un argument caster
+	/* Q2 : Pour definir un nombre maximal d'affichage il suffit de
+	remplacer le dernier parametre de pthread_create par un argument caster
 	en void. */
 	if( ret == -1) {
 		perror("pthread_create error");
@@ -67,12 +73,11 @@ int main(int argc, char *argv[])
 	args.min=arg1;
 	args.max=arg2;
 	args.taille=4;
+	args.somme=0;
 	args.matrix=calloc(args.taille,sizeof(args.taille));
 	for(int i=0; i<args.taille; i++){
 		args.matrix[i]=calloc(args.taille,sizeof(args.taille));
 	}
-	// initiqlisation du mutex
-	args.mutex = PTHREAD_MUTEX_INITIALIZER;
 	// initialisation de srand
 	srand(time(NULL));
 	for(int k=0; k<4; k++){
@@ -85,7 +90,8 @@ int main(int argc, char *argv[])
 			return EXIT_FAILURE;
 		}
 	}
-	
+
+	printf("La somme de cette matrice carre de taille 4 est de %d\n", args.somme);	
 
 	return 0;
 }
