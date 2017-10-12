@@ -22,6 +22,7 @@ typedef struct
 	int taille;
 	int nLigne;
 	int **matrix;
+	mutex_t mutex;
 } arguments;
 
 void *thread(void *arg){
@@ -39,7 +40,9 @@ void *thread(void *arg){
 int createThread(pthread_t *t, arguments *args){
 
 	int ret = pthread_create(t, NULL, thread, (void *) args);
-	// Q2 : Pour définir un nombre maximal d'affichage il suffit de remplacer le dernier paramètre de pthread_create par un argument caster en void.
+	/* Q2 : Pour définir un nombre maximal d'affichage il suffit de
+	remplacer le dernier paramètre de pthread_create par un argument caster
+	en void. */
 	if( ret == -1) {
 		perror("pthread_create error");
 		return EXIT_FAILURE;
@@ -50,12 +53,12 @@ int createThread(pthread_t *t, arguments *args){
 
 int main(int argc, char *argv[])
 {
-	/*On recupere les arguments correspondant au borne permettant de 
+	/* On recupere les arguments correspondant au borne permettant de 
 	generer un nombre entre un maximum et un minimum (min en premier max
-	en deuxieme)*/
+	en deuxieme) */
 	int arg1=atoi(argv[1]);
 	int arg2=atoi(argv[2]);
-	//On declare un tableau de 4 thread
+	// On declare un tableau de 4 thread
 	pthread_t thread[4];
 	/* creation d'une variable de type struct arguments et instanciation 
 	des elements qui la composent et allocation de l'espace memoire pour 
@@ -68,6 +71,9 @@ int main(int argc, char *argv[])
 	for(int i=0; i<args.taille; i++){
 		args.matrix[i]=calloc(args.taille,sizeof(args.taille));
 	}
+	// initiqlisation du mutex
+	args.mutex = PTHREAD_MUTEX_INITIALIZER;
+	// initialisation de srand
 	srand(time(NULL));
 	for(int k=0; k<4; k++){
 		createThread(&thread[k], &args);
