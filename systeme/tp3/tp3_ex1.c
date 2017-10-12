@@ -64,26 +64,27 @@ int main(int argc, char *argv[])
 	en deuxieme) */
 	int arg1=atoi(argv[1]);
 	int arg2=atoi(argv[2]);
-	// On declare un tableau de 4 thread
-	pthread_t thread[4];
+	int arg3=atoi(argv[3]);
 	/* creation d'une variable de type struct arguments et instanciation 
 	des elements qui la composent et allocation de l'espace memoire pour 
 	le tableau composant la matrice */
 	arguments args;
 	args.min=arg1;
 	args.max=arg2;
-	args.taille=4;
+	args.taille=arg3;
 	args.somme=0;
 	args.matrix=calloc(args.taille,sizeof(args.taille));
 	for(int i=0; i<args.taille; i++){
 		args.matrix[i]=calloc(args.taille,sizeof(args.taille));
 	}
+	// On declare un tableau de 4 thread
+	pthread_t thread[args.taille];
 	// initialisation de srand
 	srand(time(NULL));
-	for(int k=0; k<4; k++){
+	for(int k=0; k<args.taille; k++){
 		createThread(&thread[k], &args);
 	}
-	for(int l=0; l<4; l++){
+	for(int l=0; l<args.taille; l++){
 		int *ligne;
 		if (pthread_join(thread[l], (void**) &ligne)){
 			perror("pthread_join");
