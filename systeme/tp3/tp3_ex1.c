@@ -2,7 +2,7 @@
 
 Fichier : tp3_ex1.c
 Date de création : 03 octobre 2017
-Auteur : NORO Geoffrey
+Auteur : NORO Geoffrey & PEGEOT Antoine
 
 ***************************************************/
 
@@ -12,6 +12,9 @@ Auteur : NORO Geoffrey
 #include <time.h>
 #include <pthread.h>
 
+
+/* definition d'une structure arguments permettant de passer en paramêtre 
+à un thread plusieurs arguments */
 typedef struct
 {
 	int min;
@@ -47,10 +50,17 @@ int createThread(pthread_t *t, arguments *args){
 
 int main(int argc, char *argv[])
 {
+	/*On recupere les arguments correspondant au borne permettant de 
+	generer un nombre entre un maximum et un minimum (min en premier max
+	en deuxieme)*/
 	int arg1=atoi(argv[1]);
 	int arg2=atoi(argv[2]);
-	arguments args;
+	//On declare un tableau de 4 thread
 	pthread_t thread[4];
+	/* creation d'une variable de type struct arguments et instanciation 
+	des elements qui la composent et allocation de l'espace memoire pour 
+	le tableau composant la matrice */
+	arguments args;
 	args.min=arg1;
 	args.max=arg2;
 	args.taille=4;
@@ -69,6 +79,7 @@ int main(int argc, char *argv[])
 			return EXIT_FAILURE;
 		}
 	}
+	
 
 	return 0;
 }
