@@ -6,6 +6,10 @@ Auteur : NORO Geoffrey & PEGEOT Antoine
 
 ***************************************************/
 
+/* ce programme calcul la somme de tout les elements d'une matrice a l'aide
+de thread qui cree chaque ligne de la matrice et calcul la somme des elements
+de la ligne puis l'ajoute a la somme total */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -71,13 +75,13 @@ int createThread(pthread_t *t, arguments *args){
 
 int main(int argc, char *argv[])
 {
-	// test si le nombre d'argument est inferieur a 4
+	// test si le nombre d'argument est inferieur a 5
 	if(argc<5)
 	{
 		printf("Veuillez saisir le bon nombre d'argument de la maniere suivante : \n ./nomDeLExecutable borneMin borneMax nbLigne nbColonne \n");
 		return EXIT_FAILURE;
 	}
-	// test si le nombre d'argument est superieur a 4
+	// test si le nombre d'argument est superieur a 5
 	else if(argc>5) {
 		printf("Nombre d'argument trop grand veuillez utiliser la syntaxe suivante : \n ./nomDeLExecutable borneMin borneMax nbLigne nbColonne \n");
 		return EXIT_FAILURE;
