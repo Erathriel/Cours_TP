@@ -46,11 +46,11 @@ void *thread(void *arg){
 	for(int j=0; j<args->colonne; j++){
 		// on cree un nombre aleatoire entre les bornes definis
 		newligne[j]=rand()%(args->max-args->min+1) + args->min;
-		printf("[%d]", newligne[j] );
+		//printf("[%d]", newligne[j] ); // test d'affichage des éléments de la ligne
 		// on l'ajoute à la somme des precedents éléments ( initialiser a 0)
 		s+=newligne[j];
 	}
-	printf("\n");
+	//printf("\n"); // saut de ligne entre les ligne
 	/* on ajoute la somme de la ligne du thread acturel a la somme total 
 	des elements de la matrice */
 	args->somme+=s;
@@ -123,6 +123,14 @@ int main(int argc, char *argv[])
 				perror("pthread_join");
 				return EXIT_FAILURE;
 			}
+			// affichage de chaque ligne renvoye par chaque thread
+			printf("(");
+			for (int m = 0; m < args.colonne; m++)
+			{
+				printf(" %d ", ligne[m] );
+			}
+			printf(")");
+			printf("\n");
 		}
 		// affichage de la somme
 		printf("La somme de cette matrice carre de taille 4 est de %d\n", args.somme);
