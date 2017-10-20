@@ -18,16 +18,19 @@ void fa_create(struct fa *self, size_t alpha_count, size_t state_count) {
         }
     }
 
-};
+}
 
 void fa_destroy(struct fa *self) {
     free(self->states);
     for(int i=0; i<self->state_count;i++){
-        free(self->transitions[i]);
+        for (int j = 0; j < self->alpha_count; j++)
+        {
+            free(self->transitions[i][j].states);
+        }
+       ///free(self->transitions[i]);
     }
-    free(self->transitions);
-    //free(self);
-};
+    //free(self->transitions);
+}
 
 void fa_set_state_initial(struct fa *self, size_t state) {
     self->states[state].is_initial=true;
@@ -41,6 +44,13 @@ void fa_add_transition(struct fa *self,size_t from, char alpha, size_t to) {
     self->transitions[from][(int)alpha-(int)'a'].size++;
     self->transitions[from][(int)alpha-(int)'a'].capacity=self->state_count;
     self->transitions[from][(int)alpha-(int)'a'].states[to]=1;
+
+}
+
+void fa_remove_transition(struct fa *self,size_t from, char alpha, size_t to) {
+    self->transitions[from][(int)alpha-(int)'a'].states[to]=0;
+    self->transitions[from][(int)alpha-(int)'a'].capacity=self->state_count;
+    self->transitions[from][(int)alpha-(int)'a'].size--;
 }
 
 void fa_pretty_print(const struct fa *self, FILE *out){
@@ -67,11 +77,15 @@ void fa_pretty_print(const struct fa *self, FILE *out){
                 fprintf(out, "        For letter %c:", c);
                 for (int k = 0; k < self->transitions[i][j].capacity; k++)
                 {
+                    printf("etat 4 :%d\n", (int)self->transitions[i][j].states[4] );
                     if (self->transitions[i][j].states[k]==1)
                     {
+                        printf("%d\n", (int)self->transitions[i][j].states[k] );
+                        printf("taille : %d\n i : %d , j : %d, k : %d\n", (int)self->transitions[i][j].size, i, j, k);
                         fprintf(out, "%d ", k);
                     }
                 }
+
                 fprintf(out,"\n        ");
             }
         }

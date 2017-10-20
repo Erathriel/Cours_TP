@@ -408,45 +408,5 @@
               (update-alist alist-accumulator (year (car j-list-0)))))))
 
 
-(define (mergesort 1 rel-2?)
-  ;; la cloture lexicale permet aux fonctions locales d'acceder à la relation d'ordre
-  ;;
-  (define (merge-2-groups g0 g1)
-    (cond ((null? g0) g1)
-          ((null? g1) g0)
-          (else (let ((first-0 (car g0))
-                      (first-1 (car g1)))
-                  (if (rel-2? first-0 first-1)
-                      (cons first-0 (merge-2-groups (cdr g0) g1))
-                      (cons first-1 (merge-2-groups g0 (cdr g1 ))))))))
-  ;;
-  (define (merge-groups group-list)
-    (if (or (null? group-list) (null? (cdr group-list)))
-        group-list
-        (cons (merge-2-groups (car group-list) (cadr group-list))
-              (merge-groups (cddr group-list)))))
-  ;;
-  (define (make-groups 10)
-    ;; 10 est une liste linéaire non vide
-    (let ((first (car 10))
-          (rest (cdr 10)))
-      (if (null? rest)
-          (list (list first))
-          (let ((next-groups (make-groups rest)))
-            (if (rel-2? first(car rest))
-                (cons (cons first (car next-groups)) (cdr next-groups))
-                (cons (list first) next-groups))))))
-  ;;
-  (if (null? 1)
-      '()
-      (let iter-merge-groups ((group-list (make-groups 1)))
-        (if (null? (cdr group-list))
-            (car group-list)
-            (iter-merge-groups (merge-groups group-list))))))
-
-(define cp-list-example '((5 . 5) (6 . 0) (3 . 3) (6 . 1) (7 . 1) (1 . 1) (6 . 2)))
-
-
-
 
                         
