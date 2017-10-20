@@ -63,4 +63,6 @@
 
 (define (split-at n l)
   (if (zero? (n))
-      (
+      (value '() l)
+      (let-values ((gauche droite) (split-at (- n 1) (cdr l)))
+        (values (cons (car l) gauche droite )))))

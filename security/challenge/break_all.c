@@ -6,7 +6,16 @@
 
 #define ALPHABET_SIZE 26
 
-void Caesar_Break(){
+/*void RetourMenu(){
+	unsigned char choix2;
+	printf("-------------------------------------\n");
+	printf("Voulez vous retournez au menu ? (O/N) \n");
+	scanf("%c",&choix2);
+	printf("%d\n", choix2);
+	
+}*/
+
+void CaesarBreak(){
 	FILE* fileCipherText=NULL;
 	FILE* filePlainText=NULL;
 	char *fileName;
@@ -87,8 +96,9 @@ void Caesar_Break(){
         else{
         	printf("Impossible de lire le fichier %s !\n", fileName);
         }
-
+        printf("Message décrypté !\n");
         free(alphabetFreq);
+        //RetourMenu();
 	}
 
 	else {
@@ -111,13 +121,17 @@ void FaireChoix(){
 
 	switch(choix){
 		case 1:
+			printf("-------------------------------------\n");
 			printf("Choix cesar\n");
-			Caesar_Break();
+			CaesarBreak();
 			break;
 		case 2:
+			printf("-------------------------------------\n");
 			printf("Choix Vigenere\n");
+			//RetourMenu();
 			break;
 		case 3:
+			printf("-------------------------------------\n");
 			printf("Choix substitution\n");
 			break;
 		default:
