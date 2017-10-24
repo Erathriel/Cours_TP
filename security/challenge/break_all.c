@@ -70,6 +70,76 @@ void VigenereBreak(){
 	}
 }
 
+/*void VigenereBreak(){
+	FILE* fileCipherText=NULL;
+	char *fileName;
+	int *alphabetFreq;
+	char *message;
+
+	int nbLettre=0;
+	float indiceCoincidence=0;
+	int tailleKey=0;
+	int compteur=0;
+
+	char charAt;
+
+	fileName=malloc(sizeof(char)*256);
+	alphabetFreq=calloc(ALPHABET_SIZE,sizeof(int));
+	message=malloc(sizeof(char)*50000);
+
+
+	printf("Saisir le nom du fichier .txt contenant le message chiffré :\n");
+	scanf("%s",fileName);
+	printf("%s\n",fileName );
+
+	fileCipherText = fopen(fileName, "r");
+
+	if (fileCipherText != NULL)
+	{
+        do{
+        	charAt=fgetc(fileCipherText);
+        	message[compteur]=charAt;
+        	compteur++;
+        }
+        while(charAt != EOF);
+        fclose(fileCipherText);
+        while(indiceCoincidence < 0.073 || indiceCoincidence > 0.077){
+        	indiceCoincidence = 0;
+        	nbLettre=0;
+        	for (int l = 0; l < compteur; l+=tailleKey)
+        	{
+        		unsigned char c = (unsigned char) message[l];
+        		if ((c >= 'A' && c <= 'Z'))
+        		{
+        			alphabetFreq[c -'A'] +=1;
+        			nbLettre++;
+        		}
+        	}
+        	for (int i = 0; i < ALPHABET_SIZE; ++i)
+	        {
+	        	unsigned char c = (unsigned char) (i+'A');
+	        	printf("La lettre %c apparait %d fois dans le texte.\n", c ,alphabetFreq[i]);
+	        	printf("alphfreq :%d\n", alphabetFreq[i] );
+
+	        	indiceCoincidence += (float)(alphabetFreq[i]*(alphabetFreq[i]-1))/(nbLettre*(nbLettre-1));
+	        }
+	        for (int j = 0; j < ALPHABET_SIZE; j++)
+	        {
+	        	alphabetFreq[j]=0;
+	        }
+	        printf("%f\n",indiceCoincidence );
+	        printf("compteur : %d\n", compteur);
+	        tailleKey++;
+        }
+        printf("%d\n", tailleKey);
+
+        free(alphabetFreq);
+	}
+	else{
+		printf("Impossible de lire le fichier %s !\n", fileName);
+	}
+}*/
+
 void CaesarBreak(){
 	FILE* fileCipherText=NULL;
 	FILE* filePlainText=NULL;
