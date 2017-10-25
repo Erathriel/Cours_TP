@@ -6,7 +6,7 @@
 
 #define ALPHABET_SIZE 26
 #define INDICE_FR 0.075
-#define INDICE_ALEATOIRE 0.038
+#define INDICE_ALEATOIRE 0.035
 
 /*void RetourMenu(){
 	unsigned char choix2;
@@ -17,7 +17,7 @@
 	
 }*/
 
-void VigenereBreak(){
+/*void VigenereBreak(){
 	FILE* fileCipherText=NULL;
 	char *fileName;
 	int *alphabetFreq;
@@ -68,9 +68,11 @@ void VigenereBreak(){
 	else{
 		printf("Impossible de lire le fichier %s !\n", fileName);
 	}
-}
+}*/
 
-/*void VigenereBreak(){
+void VigenereBreak(){
+	FILE* logFile=NULL;
+
 	FILE* fileCipherText=NULL;
 	char *fileName;
 	int *alphabetFreq;
@@ -79,7 +81,7 @@ void VigenereBreak(){
 	int nbLettre=0;
 	float indiceCoincidence=0;
 	int tailleKey=0;
-	int compteur=0;
+	int tailleMessage=0;
 
 	char charAt;
 
@@ -92,44 +94,52 @@ void VigenereBreak(){
 	scanf("%s",fileName);
 	printf("%s\n",fileName );
 
+	logFile = fopen("log.txt","w");
 	fileCipherText = fopen(fileName, "r");
 
 	if (fileCipherText != NULL)
 	{
         do{
         	charAt=fgetc(fileCipherText);
-        	message[compteur]=charAt;
-        	compteur++;
+        	message[tailleMessage]=charAt;
+        	tailleMessage++;
         }
         while(charAt != EOF);
         fclose(fileCipherText);
-        while(indiceCoincidence < 0.073 || indiceCoincidence > 0.077){
+        while(tailleKey < 16 && (indiceCoincidence < 0.073 || indiceCoincidence > 0.077)){
         	indiceCoincidence = 0;
-        	nbLettre=0;
-        	for (int l = 0; l < compteur; l+=tailleKey)
+        	tailleKey++;
+        	for (int k = 0; k < tailleKey; k++)
         	{
-        		unsigned char c = (unsigned char) message[l];
-        		if ((c >= 'A' && c <= 'Z'))
-        		{
-        			alphabetFreq[c -'A'] +=1;
-        			nbLettre++;
-        		}
-        	}
-        	for (int i = 0; i < ALPHABET_SIZE; ++i)
-	        {
-	        	unsigned char c = (unsigned char) (i+'A');
-	        	printf("La lettre %c apparait %d fois dans le texte.\n", c ,alphabetFreq[i]);
-	        	printf("alphfreq :%d\n", alphabetFreq[i] );
+        		fprintf(logFile, "---------------------DEBUT boucle %d ----------------------\n", k);
+        		nbLettre=0;
+        		for (int l = 0; l < tailleMessage; l+=tailleKey)
+	        	{
+	        		unsigned char c = (unsigned char) message[l+k];
+	        		if ((c >= 'A' && c <= 'Z'))
+	        		{
+	        			alphabetFreq[c -'A'] +=1;
+	        			nbLettre++;
+	        		}
+	        	}
+	        	for (int i = 0; i < ALPHABET_SIZE; ++i)
+		        {
+		        	unsigned char c = (unsigned char) (i+'A');
+		        	fprintf(logFile,"La lettre %c apparait %d fois dans le texte.\n", c ,alphabetFreq[i]);
 
-	        	indiceCoincidence += (float)(alphabetFreq[i]*(alphabetFreq[i]-1))/(nbLettre*(nbLettre-1));
-	        }
-	        for (int j = 0; j < ALPHABET_SIZE; j++)
-	        {
-	        	alphabetFreq[j]=0;
-	        }
-	        printf("%f\n",indiceCoincidence );
-	        printf("compteur : %d\n", compteur);
-	        tailleKey++;
+		        	indiceCoincidence += (float)(alphabetFreq[i]*(alphabetFreq[i]-1))/(float)(nbLettre*(nbLettre-1));
+		        }
+		        for (int j = 0; j < ALPHABET_SIZE; j++)
+		        {
+		        	alphabetFreq[j]=0;
+		        }
+		        fprintf(logFile," n lettre : %d\n",nbLettre );
+        	}
+        	indiceCoincidence /= tailleKey;
+
+	        fprintf(logFile,"indice : %f\n",indiceCoincidence );
+	        fprintf(logFile,"tailleMessage : %d\n", tailleMessage);
+	        fprintf(logFile,"key : %d\n",tailleKey );
         }
         printf("%d\n", tailleKey);
 
@@ -138,7 +148,8 @@ void VigenereBreak(){
 	else{
 		printf("Impossible de lire le fichier %s !\n", fileName);
 	}
-}*/
+	fclose(logFile);
+}
 
 void CaesarBreak(){
 	FILE* fileCipherText=NULL;
