@@ -107,13 +107,11 @@ void VigenereBreak(){
         while(charAt != EOF);
         fclose(fileCipherText);
         while(tailleKey < 16 && (indiceCoincidence < 0.073 || indiceCoincidence > 0.077)){
-        	//float indiceCoincidenceMoy=0;
         	indiceCoincidence = 0;
         	tailleKey++;
         	for (int k = 0; k < tailleKey; k++)
         	{
         		fprintf(logFile, "---------------------DEBUT boucle %d ----------------------\n", k);
-        		
         		nbLettre=0;
         		for (int l = 0; l < tailleMessage; l+=tailleKey)
 	        	{
@@ -128,19 +126,23 @@ void VigenereBreak(){
 		        {
 		        	unsigned char c = (unsigned char) (i+'A');
 		        	fprintf(logFile,"La lettre %c apparait %d fois dans le texte.\n", c ,alphabetFreq[i]);
-
-		        	indiceCoincidence += (float)(alphabetFreq[i]*(alphabetFreq[i]-1))/(float)(nbLettre*(nbLettre-1));
+		        	fprintf(logFile, "alpha freq : %d \n",alphabetFreq[i] );
+		        	fprintf(logFile,"numerateur : %f\n", (float)(alphabetFreq[i]*(alphabetFreq[i]-1.0)));
+		        	fprintf(logFile, "denominateur : %f\n",(float)(nbLettre*(nbLettre-1.0)) );
+		        	fprintf(logFile, "res : %f\n", (float)(alphabetFreq[i]*(alphabetFreq[i]-1.0))/(float)(nbLettre*(nbLettre-1.0)));
+		        	indiceCoincidence += (float)(alphabetFreq[i]*(alphabetFreq[i]-1.0))/(float)(nbLettre*(nbLettre-1.0));
+		        	fprintf(logFile, "tmp ind : %f \n", indiceCoincidence);
 		        }
 		        for (int j = 0; j < ALPHABET_SIZE; j++)
 		        {
 		        	alphabetFreq[j]=0;
 		        }
 		        fprintf(logFile," n lettre : %d\n",nbLettre );
-		        fprintf(logFile, "%f\n",indiceCoincidence );
         	}
+	        indiceCoincidence /= tailleKey;
 	        fprintf(logFile,"indice : %f\n",indiceCoincidence );
 	        fprintf(logFile,"tailleMessage : %d\n", tailleMessage);
-	        fprintf(logFile,"key : %d\n",tailleKey );
+	        fprintf(logFile,"key : %d\n\n\n",tailleKey );
         }
         printf("%d\n", tailleKey);
 
