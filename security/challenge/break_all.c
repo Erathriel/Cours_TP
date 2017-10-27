@@ -120,6 +120,7 @@ void VigenereBreak(){
 	        		{
 	        			alphabetFreq[c -'A'] +=1;
 	        			nbLettre++;
+	        			fprintf(logFile, "lettre lu : %c\n", c);
 	        		}
 	        	}
 	        	for (int i = 0; i < ALPHABET_SIZE; ++i)
