@@ -28,6 +28,7 @@ int main (int argc, char *argv[]) {
     fa_add_transition(&test,4,'a',4);
     fa_add_transition(&test,4,'b',4);
     fa_remove_transition(&test,4,'b',4);
+    //fa_remove_state(&test,0);
     fa_pretty_print(&test, fichier);
     fa_destroy(&test);
     return 0;

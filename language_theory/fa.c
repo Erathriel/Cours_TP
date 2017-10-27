@@ -63,6 +63,23 @@ void fa_remove_transition(struct fa *self,size_t from, char alpha, size_t to) {
     self->transitions[from][(int)alpha-(int)'a'].size--;
 }
 
+void fa_remove_state(struct fa *self, size_t state)
+{
+    for (int i = 0; i < self->state_count; ++i)
+    {
+        for (int j = 0; j < self->alpha_count; ++j)
+        {
+            unsigned char c = (unsigned char) (j+'a');
+            fa_remove_transition(self, state, c, i);
+        }
+    }
+    for (int i = state; i < self->state_count; ++i)
+    {
+        self->states[i]=self->states[i+1];
+    }
+    self->state_count--;
+}
+
 void fa_pretty_print(const struct fa *self, FILE *out){
     if(out != NULL){
         fprintf(out, "Initial states:\n        ");
