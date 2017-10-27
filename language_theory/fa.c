@@ -9,27 +9,37 @@
 void fa_create(struct fa *self, size_t alpha_count, size_t state_count) {
     self->alpha_count = alpha_count;
     self->state_count = state_count;
+
     self->states = calloc(state_count,sizeof(struct state));
     self->transitions=calloc(state_count, sizeof(struct state_set));
+
     for(int i=0; i<self->state_count;i++){
         self->transitions[i]=calloc(alpha_count, sizeof(struct state_set));
         for(int j=0; j<alpha_count;j++){
-            self->transitions[i][j].states=calloc(state_count, sizeof(struct state));
+            self->transitions[i][j].states=calloc(state_count, sizeof(size_t));
         }
     }
 
 }
 
 void fa_destroy(struct fa *self) {
+    if (self->states == NULL && self->transitions == NULL) {
+        return;
+    }
     free(self->states);
     for(int i=0; i<self->state_count;i++){
         for (int j = 0; j < self->alpha_count; j++)
         {
             free(self->transitions[i][j].states);
         }
-       ///free(self->transitions[i]);
     }
-    //free(self->transitions);
+    for (size_t i=0;i<self->state_count;i++){
+        free(self->transitions[i]);
+    }
+    free(self->transitions);
+    self->states = NULL;
+    self->transitions = NULL;
+
 }
 
 void fa_set_state_initial(struct fa *self, size_t state) {
@@ -77,11 +87,8 @@ void fa_pretty_print(const struct fa *self, FILE *out){
                 fprintf(out, "        For letter %c:", c);
                 for (int k = 0; k < self->transitions[i][j].capacity; k++)
                 {
-                    printf("etat 4 :%d\n", (int)self->transitions[i][j].states[4] );
                     if (self->transitions[i][j].states[k]==1)
                     {
-                        printf("%d\n", (int)self->transitions[i][j].states[k] );
-                        printf("taille : %d\n i : %d , j : %d, k : %d\n", (int)self->transitions[i][j].size, i, j, k);
                         fprintf(out, "%d ", k);
                     }
                 }
