@@ -16,60 +16,6 @@
 	//printf("%d\n", choix2);
 	
 }*/
-
-/*void VigenereBreak(){
-	FILE* fileCipherText=NULL;
-	char *fileName;
-	int *alphabetFreq;
-
-	int nbLettre=0;
-	float indiceCoincidence=0;
-	int tailleKey=0;
-
-	char charAt;
-
-	fileName=malloc(sizeof(char)*256);
-	alphabetFreq=calloc(ALPHABET_SIZE,sizeof(int));
-
-
-	printf("Saisir le nom du fichier .txt contenant le message chiffré :\n");
-	scanf("%s",fileName);
-	printf("%s\n",fileName );
-
-	fileCipherText = fopen(fileName, "r");
-
-	if (fileCipherText != NULL)
-	{
-        do{
-        	charAt=fgetc(fileCipherText);
-        	if (charAt >= 'A' && charAt <= 'Z')
-        	{
-        		alphabetFreq[charAt-'A'] += 1;
-        		nbLettre++;
-        	}
-        }
-        while(charAt != EOF);
-        fclose(fileCipherText);
-        for (int i = 0; i < ALPHABET_SIZE; ++i)
-        {
-        	unsigned char c = (unsigned char) (i+65);
-        	printf("La lettre %c apparait %d fois dans le texte.\n", c ,alphabetFreq[i]);
-
-        	indiceCoincidence += (float)(alphabetFreq[i]*(alphabetFreq[i]-1))/(nbLettre*(nbLettre-1));
-        }
-        printf("%f\n",INDICE_FR );
-        printf("%f\n",INDICE_ALEATOIRE );
-        printf("%d\n",nbLettre );
-        printf("%f\n",indiceCoincidence );
-        tailleKey = ((INDICE_FR - INDICE_ALEATOIRE)*nbLettre)/((nbLettre)*indiceCoincidence - (nbLettre*INDICE_ALEATOIRE) + INDICE_FR);
-        printf("%d\n", tailleKey);
-        free(alphabetFreq);
-	}
-	else{
-		printf("Impossible de lire le fichier %s !\n", fileName);
-	}
-}*/
-
 void VigenereBreak(){
 	FILE* logFile=NULL;
 
@@ -77,17 +23,20 @@ void VigenereBreak(){
 	char *fileName;
 	int *alphabetFreq;
 	char *message;
+	char *messageNoSpace;
 
 	int nbLettre=0;
 	float indiceCoincidence=0;
 	int tailleKey=0;
 	int tailleMessage=0;
+	int tailleMessageNoSpace=0;
 
 	char charAt;
 
 	fileName=malloc(sizeof(char)*256);
 	alphabetFreq=calloc(ALPHABET_SIZE,sizeof(int));
 	message=malloc(sizeof(char)*50000);
+	messageNoSpace=malloc(sizeof(char)*50000);
 
 
 	printf("Saisir le nom du fichier .txt contenant le message chiffré :\n");
@@ -106,16 +55,24 @@ void VigenereBreak(){
         }
         while(charAt != EOF);
         fclose(fileCipherText);
-        while(tailleKey < 16 && (indiceCoincidence < 0.073 || indiceCoincidence > 0.077)){
+        for (int c = 0; c < tailleMessage; c++)
+        {
+        	if ((message[c] >= 'A' && message[c] <= 'Z'))
+	        {
+	        	messageNoSpace[tailleMessageNoSpace]=message[c];
+	        	tailleMessageNoSpace++;
+	        }
+        }
+        while(tailleKey < 16 && (indiceCoincidence < 0.075 || indiceCoincidence > 0.085)){
         	indiceCoincidence = 0;
         	tailleKey++;
         	for (int k = 0; k < tailleKey; k++)
         	{
         		fprintf(logFile, "---------------------DEBUT boucle %d ----------------------\n", k);
         		nbLettre=0;
-        		for (int l = 0; l < tailleMessage; l+=tailleKey)
+        		for (int l = 0; l < tailleMessageNoSpace; l+=tailleKey)
 	        	{
-	        		unsigned char c = (unsigned char) message[l+k];
+	        		unsigned char c = (unsigned char) messageNoSpace[l+k];
 	        		if ((c >= 'A' && c <= 'Z'))
 	        		{
 	        			alphabetFreq[c -'A'] +=1;
@@ -142,16 +99,17 @@ void VigenereBreak(){
         	}
 	        indiceCoincidence /= tailleKey;
 	        fprintf(logFile,"indice : %f\n",indiceCoincidence );
-	        fprintf(logFile,"tailleMessage : %d\n", tailleMessage);
+	        fprintf(logFile,"tailleMessage : %d\n", tailleMessageNoSpace);
 	        fprintf(logFile,"key : %d\n\n\n",tailleKey );
         }
         printf("%d\n", tailleKey);
-
-        free(alphabetFreq);
 	}
 	else{
 		printf("Impossible de lire le fichier %s !\n", fileName);
 	}
+	free(messageNoSpace);
+    free(message);
+    free(alphabetFreq);
 	fclose(logFile);
 }
 
