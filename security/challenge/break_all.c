@@ -136,7 +136,7 @@ void VigenereBreak(){
         		unsigned char c = (unsigned char) p;
         		if (alphabetFreq[p]>max)
         		{
-        			c -= 'A';
+        			c -= 'E';
         			c = c + 2 * 'A';
         			if (c < 'A')
         			{
