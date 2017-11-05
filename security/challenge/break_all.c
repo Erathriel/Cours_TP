@@ -24,6 +24,79 @@
 
 //int* RAZFreq(int* alphabetFreq)
 
+void VigenereDecrypt(char* key, char* cipherTextName){
+	FILE* fileCipherText=NULL;
+	FILE* filePlainText=NULL;
+
+	char *decryptKey = key;
+	char *fileName = cipherTextName;
+	char *fileName2;
+
+	char charAt;
+
+	fileName2=malloc(sizeof(char)*256);
+
+	printf("La cle est : %s\n", key );
+
+	printf("Saisir le nom du fichier .txt contenant le message chiffré :\n");
+	scanf("%s",fileName2);
+
+	fileCipherText = fopen(fileName,"r");
+	filePlainText = fopen(fileName2,"w");
+
+	if (fileCipherText != NULL && filePlainText != NULL)
+	{
+		int letter=0;
+		do{
+        	charAt=fgetc(fileCipherText);
+        	if (charAt >= 'A' && charAt <= 'Z')
+        	{
+        		if (letter > strlen(key)-1)
+        		{
+        			letter=0;
+        			printf("char lu : %c\n", charAt);
+        			charAt = (charAt - key[letter%strlen(key)]+26)%26;
+        			charAt += 'A';
+        			printf("lettre de la cle : %c\n", key[letter]);
+        			printf("%c\n",charAt );
+        			if (charAt < 'A')
+        			{	
+        				charAt += 26;
+        			}
+        			fputc(charAt, filePlainText);
+        			letter++;
+        		}
+        		else{
+        			printf("char lu : %c\n", charAt);
+        			charAt = (charAt - key[letter%strlen(key)]+26)%26;
+        			charAt += 'A';
+        			printf("lettre de la cle : %c\n", key[letter]);
+        			printf("%c\n",charAt );
+        			if (charAt < 'A')
+        			{	
+        				charAt += 26;
+        			}
+        			fputc(charAt, filePlainText);
+        			letter++;
+        		}
+        	}
+        	else if(charAt == -1){
+        		fputc(' ', filePlainText);
+        	}
+        	else {
+        		fputc(charAt, filePlainText);
+        	}
+        }
+        while(charAt != EOF);
+        fclose(fileCipherText);
+        fclose(filePlainText);
+	}
+	else {
+		printf("Impossible de lire le fichier %s ou %s !\n", fileName, fileName2);
+	}
+	free(fileName2);
+}
+
 void VigenereBreak(){
 	//FILE* logFile=NULL;
 
@@ -52,7 +125,6 @@ void VigenereBreak(){
 
 	printf("Saisir le nom du fichier .txt contenant le message chiffré :\n");
 	scanf("%s",fileName);
-	printf("%s\n",fileName );
 
 	//logFile = fopen("log.txt","w");
 	fileCipherText = fopen(fileName, "r");
@@ -149,6 +221,7 @@ void VigenereBreak(){
         	}
         	printf("%c\n", key[n]);
         }
+        VigenereDecrypt(key,fileName);
 	}
 	else{
 		printf("Impossible de lire le fichier %s !\n", fileName);
