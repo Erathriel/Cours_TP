@@ -1,3 +1,10 @@
+/***************************************************
+
+Fichier : break_all.c
+Auteur : NORO Geoffrey
+
+***************************************************/
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,6 +20,7 @@ on veut stocker le texte sans caractere special
 */
 char* TxtSansSpeChar(char* mess, int tailleMess, char* messNoSpace){
     int tailleMessageNoSpace=0;
+    // parcours le message avec caractere speciaux stock uniquement les lettre dans le second tableau
     for (int c = 0; c < tailleMess; c++)
     {
         if ((mess[c] >= 'A' && mess[c] <= 'Z'))
@@ -31,6 +39,7 @@ prend en parametre le fichier .txt du texte chiffre et le tableau de caratere da
 lequel on stock les caractere présent dans le fichier
 */
 char* LireTxt(FILE* file, char* mess){
+    // variable permettant de stocker le caractere lu a chaque iteration
     char charAt;
     int tailleMessage=0;
     do{
@@ -38,7 +47,7 @@ char* LireTxt(FILE* file, char* mess){
         mess[tailleMessage]=charAt;
         tailleMessage++;
     }
-    while(charAt != EOF);
+    while(charAt != EOF); // stop lorsque le programme arrive a la fin du fichier
 
     return mess;
 }
@@ -47,7 +56,7 @@ char* LireTxt(FILE* file, char* mess){
 le tableau des frequences des lettres de l'alphabet
 */
 int* RAZFreq(int* alphaFreq){
-
+    // parcours le tableau et met les valeurs à 0
     for (int j = 0; j < ALPHABET_SIZE; j++)
     {
         alphaFreq[j]=0;
@@ -63,9 +72,14 @@ caractere speciaux et le nombre de lettre du message
 */
 int CalculCleVigenere(char* messageNoSpace, float indiceCoincidence, int tailleKey, int* alphabetFreq, int tailleMessageNoSpace, int nbLettre){
 
+    /* 
+    parcours le texte avec un decalage avec des tailles de clef inferieur a 16 et tant que l'indice de coincidence n'est pas compris entre
+    0.075 et 0.085
+    */
     while(tailleKey < 16 && (indiceCoincidence < 0.075 || indiceCoincidence > 0.085)){
             indiceCoincidence = 0;
             tailleKey++;
+            // parcours le texte toute les k lettres depuis la lettre de position k
             for (int k = 0; k < tailleKey; k++)
             {
                 nbLettre=0;
@@ -78,6 +92,7 @@ int CalculCleVigenere(char* messageNoSpace, float indiceCoincidence, int tailleK
                         nbLettre++;
                     }
                 }
+                // calcul l'indice de coincidence
                 for (int i = 0; i < ALPHABET_SIZE; ++i)
                 {
                     unsigned char c = (unsigned char) (i+'A');
@@ -92,9 +107,50 @@ int CalculCleVigenere(char* messageNoSpace, float indiceCoincidence, int tailleK
         return tailleKey;
 }
 
+/* cherche la cle utilisee pour chiffrer le texte prenant en parametre
+le message sans caractere special, l indice de coincidence, la taille de la clef, 
+le tableau de fréquence des lettres de l alphabet, la taille du message sans 
+caractere speciaux, le tableau de caractere de la cle et le nombre de lettre du message
+*/
+char* ChercheCle(int tailleKey, char* messageNoSpace, int* alphabetFreq, int max, char* key, int tailleMessageNoSpace, int nbLettre){
+    // recherche dans chaque sous texte la lettre la plus utiliser correspondant au decalage de son texte et trouve la lettre correspondante
+    for (int n = 0; n < tailleKey; n++)
+    {
+        max=0;
+        nbLettre=0;
+        for (int o = 0; o < tailleMessageNoSpace; o+=tailleKey)
+        {
+            unsigned char c = (unsigned char) messageNoSpace[o+n];
+                if ((c >= 'A' && c <= 'Z'))
+                {
+                    alphabetFreq[c -'A'] +=1;
+                    nbLettre++;
+                }
+        }
+        for (int p = 0; p < ALPHABET_SIZE; p++)
+        {
+            unsigned char c = (unsigned char) p;
+            if (alphabetFreq[p]>max)
+            {
+                c -= 'E';
+                c = c + 2 * 'A';
+                if (c < 'A')
+                {
+                    c+=26;
+                }
+                key[n]=c;
+                max=alphabetFreq[p];
+            }
+            alphabetFreq[p]=0;
+        }
+    }
+    return key;
+}
+
 /* 
 fonction de déchiffrement de Vigenere prenant en paramètre la clef obtenue dans 
 la fonction Vigenere_break et le nom du fichier du texte chiffrer (du type : texte.txt)
+et stock le resultat dans un fichier
 */
 void VigenereDecrypt(char* key, char* cipherTextName){
 	FILE* fileCipherText=NULL;
@@ -171,7 +227,6 @@ void VigenereDecrypt(char* key, char* cipherTextName){
 
 // decrypte le chiffre de Vigenere a l aide de la fonction de dichiffrement de Vigenere
 void VigenereBreak(){
-	//FILE* logFile=NULL;
 
 	FILE* fileCipherText=NULL;
 	char *fileName;
@@ -199,7 +254,6 @@ void VigenereBreak(){
 	printf("Saisir le nom du fichier .txt contenant le message chiffré :\n");
 	scanf("%s",fileName);
 
-	//logFile = fopen("log.txt","w");
 	fileCipherText = fopen(fileName, "r");
 
 	if (fileCipherText != NULL)
@@ -211,37 +265,7 @@ void VigenereBreak(){
         tailleMessageNoSpace=strlen(messageNoSpace);
         tailleKey=CalculCleVigenere(messageNoSpace, indiceCoincidence, tailleKey, alphabetFreq, tailleMessageNoSpace, nbLettre);
         alphabetFreq=RAZFreq(alphabetFreq);
-        for (int n = 0; n < tailleKey; n++)
-        {
-        	max=0;
-        	nbLettre=0;
-        	for (int o = 0; o < tailleMessageNoSpace; o+=tailleKey)
-        	{
-        		unsigned char c = (unsigned char) messageNoSpace[o+n];
-	        		if ((c >= 'A' && c <= 'Z'))
-	        		{
-	        			alphabetFreq[c -'A'] +=1;
-	        			nbLettre++;
-	        		}
-        	}
-        	for (int p = 0; p < ALPHABET_SIZE; p++)
-        	{
-        		unsigned char c = (unsigned char) p;
-        		if (alphabetFreq[p]>max)
-        		{
-        			c -= 'E';
-        			c = c + 2 * 'A';
-        			if (c < 'A')
-        			{
-        				c+=26;
-        			}
-        			key[n]=c;
-        			max=alphabetFreq[p];
-        		}
-        		alphabetFreq[p]=0;
-        	}
-        	printf("%c\n", key[n]);
-        }
+        key=ChercheCle(tailleKey, messageNoSpace, alphabetFreq, max, key, tailleMessageNoSpace, nbLettre);
         VigenereDecrypt(key,fileName);
 	}
 	else{
