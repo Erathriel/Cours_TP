@@ -1,0 +1,10 @@
+plain45-0.txt : methode = Cesar clé = 3
+plain45-1.txt : methode = Substitution 
+plain45-2.txt : methode = Substitution 
+plain45-3.txt : methode = Vigenere clé = 18
+plain45-4.txt : methode = Substitution 
+plain45-5.txt : methode = Vigenere clé = NZZJIEXZDIS
+plain45-6.txt : methode = Vigenere clé = GDRLNKCNPOFR
+plain45-7.txt : methode = Cesar clé = 11
+plain45-8.txt : methode = Vigenere clé = VAONMMKLCJAU
+plain45-9.txt : methode = Vigenere clé = OCHFWEDTS

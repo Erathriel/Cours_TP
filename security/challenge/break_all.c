@@ -10,6 +10,7 @@ Auteur : NORO Geoffrey
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <stdbool.h>
 
 #define ALPHABET_SIZE 26
 #define INDICE_FR 0.075
@@ -227,6 +228,164 @@ void VigenereDecrypt(char* key, char* cipherTextName){
 
 // decrypte le chiffrement par substitution
 void SubstitutionBreak(){
+    FILE* fileCipherText=NULL;
+    FILE* filePlainText=NULL;
+
+    char *fileName;
+    char *fileName2;
+    char *message;
+    int *alphabetFreq;
+    char alphabetTxt[ALPHABET_SIZE]={
+        'A', 'B', 'C', 'D', 'E', 'F', 'G',
+        'H', 'I', 'J', 'K', 'L', 'M', 'N',
+        'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+        'V', 'W', 'X', 'Y', 'Z'
+    };
+    char alphabetFR[ALPHABET_SIZE]={
+        'A', 'B', 'C', 'D', 'E', 'F', 'G',
+        'H', 'I', 'J', 'K', 'L', 'M', 'N',
+        'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+        'V', 'W', 'X', 'Y', 'Z'
+    };
+    float freqChallenge[ALPHABET_SIZE]={
+        7.31f, 0.67f, 3.75f, 3.15f, 16.30f, 1.00f, 0.86f,
+        0.61f, 10.16f, 0.20f, 0.15f, 6.20f, 3.27f, 8.85f,
+        5.62f, 2.89f, 1.48f, 5.69f, 7.06f, 8.31f, 4.85f,
+        0.64f, 0.01f, 0.037f, 0.49f, 0.11f
+    };
+
+    int nbLettre=0;
+    int max=0;
+    float maxF=0.0f;
+    char charAt;
+    char carac;
+
+    fileName=malloc(sizeof(char)*256);
+    fileName2=malloc(sizeof(char)*256);
+    message=malloc(sizeof(char)*50000);
+    alphabetFreq=calloc(ALPHABET_SIZE,sizeof(int));
+
+    printf("Saisir le nom du fichier .txt contenant le message chiffré :\n");
+    scanf("%s",fileName);
+    printf("Saisir le nom du fichier .txt qui recevras le message décrypté :\n");
+    scanf("%s",fileName2);
+
+    fileCipherText = fopen(fileName, "r");
+
+    if (fileCipherText != NULL )
+    {
+        do{
+            charAt=fgetc(fileCipherText);
+            if (charAt >= 'A' && charAt <= 'Z')
+            {
+                alphabetFreq[charAt-'A'] += 1;
+                nbLettre++;
+            }
+        }
+        while(charAt != EOF);
+        fclose(fileCipherText);
+        for (int j = 0; j < ALPHABET_SIZE; j++)
+        {
+            max = alphabetFreq[j];
+            carac = alphabetTxt[j];
+            int k = j;
+            while( k > 0 && alphabetFreq[k-1] < max){
+                alphabetFreq[k]=alphabetFreq[k-1];
+                alphabetTxt[k]=alphabetTxt[k-1];
+                k=k-1;
+            }
+            alphabetFreq[k]=max;
+            alphabetTxt[k]=carac;
+        }
+        for (int i = 0; i < ALPHABET_SIZE; ++i)
+        {
+            unsigned char c = (unsigned char) alphabetTxt[i];
+            printf("La frequence de la lettre %c est de : %d\n", c, alphabetFreq[i]);
+        }
+        for (int j = 0; j < ALPHABET_SIZE; j++)
+        {
+            maxF = freqChallenge[j];
+            carac = alphabetFR[j];
+            int k = j;
+            while( k > 0 && freqChallenge[k-1] < maxF){
+                freqChallenge[k]=freqChallenge[k-1];
+                alphabetFR[k]=alphabetFR[k-1];
+                k=k-1;
+            }
+            freqChallenge[k]=maxF;
+            alphabetFR[k]=carac;
+        }
+        for (int i = 0; i < ALPHABET_SIZE; ++i)
+        {
+            unsigned char c = (unsigned char) alphabetFR[i];
+            printf("La frequence de la lettre %c est de : %f\n", c, freqChallenge[i]);
+        }
+        int choixUser=0;
+        bool choix=true;
+        // lis le texte chiffre et le reecris decrypte dans un autre fichier
+        while(choix){
+            nbLettre=0;
+            fileCipherText = fopen(fileName, "r");
+            filePlainText = fopen(fileName2, "w");
+            if (fileCipherText !=NULL && filePlainText !=NULL)
+            {
+                do{
+                    charAt=fgetc(fileCipherText);
+                    if (charAt >= 'A' && charAt <= 'Z')
+                    {
+                        for (int i = 0; i < ALPHABET_SIZE; ++i)
+                        {
+                            if (charAt == alphabetTxt[i])
+                            {
+                                charAt = alphabetFR[i];
+                                break;
+                            }
+                        }
+                    }
+
+                    message[nbLettre]=charAt;
+                    nbLettre++;
+                }
+                while(charAt != EOF);
+                fclose(fileCipherText);
+                
+            }
+            else{
+                printf("Impossible de lire le fichier %s !\n", fileName);
+            }
+            printf("Voulez vous echanger deux lettre dans l'alphabet Français ?\n1) Oui \n 2) Non\n");
+            scanf ("%d", &choixUser);
+            if (choixUser == 2)
+            {
+                choix = false;
+                for (int i = 0; i < strlen(message); ++i)
+                {
+                    fputc(message[i], filePlainText);
+                }
+            }
+            if(choixUser == 1){
+                char tmp;
+                int lettre1;
+                int lettre2;
+                printf("Quel lettre voulez vous echanger ?\n");
+                for (int i = 0; i < ALPHABET_SIZE; ++i)
+                {
+                    printf("%c  ", alphabetFR[i]);
+                }
+                printf("Lettre 1 : \n");
+                scanf("%d", &lettre1);
+                printf("Lettre 2 : \n");
+                scanf("%d", &lettre2);
+                tmp=alphabetFR[lettre1];
+                alphabetFR[lettre1]=alphabetFR[lettre2];
+                alphabetFR[lettre2]=tmp;
+            }
+        }
+        fclose(filePlainText);
+    }
+    else{
+        printf("Impossible de lire le fichier %s !\n", fileName);
+    }
 
 }
 
@@ -234,6 +393,7 @@ void SubstitutionBreak(){
 void VigenereBreak(){
 
 	FILE* fileCipherText=NULL;
+
 	char *fileName;
 	int *alphabetFreq;
 	char *message;
@@ -408,6 +568,7 @@ void FaireChoix(){
 		case 3:
 			printf("-------------------------------------\n");
 			printf("Choix substitution\n");
+            SubstitutionBreak();
 			break;
 		default:
 			printf("Votre choix n'est pas entre 1,2 ou 3 !\n");
