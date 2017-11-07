@@ -31,7 +31,6 @@ char* TxtSansSpeChar(char* mess, int tailleMess, char* messNoSpace){
 
 //int CalculCleVigenere(char* txtPropre)
 
-// lis le texte ecrit dans un fichier et le stock dans un tableau de caractere
 char* LireTxt(FILE* file, char* mess){
     char charAt;
     int tailleMessage=0;
@@ -45,7 +44,6 @@ char* LireTxt(FILE* file, char* mess){
     return mess;
 }
 
-// remet a 0 les frequences d apparition des lettres de l alphabet
 int* RAZFreq(int* alphaFreq){
 
     for (int j = 0; j < ALPHABET_SIZE; j++)
@@ -168,8 +166,8 @@ void VigenereBreak(){
 
 	if (fileCipherText != NULL)
 	{
-        message=LireTxt(fileCipherText, message);
-        tailleMessage=strlen(message);
+        message = LireTxt(fileCipherText, message);
+        tailleMessage = strlen(message);
         fclose(fileCipherText);
         messageNoSpace=TxtSansSpeChar(message, tailleMessage, messageNoSpace);
         tailleMessageNoSpace=strlen(messageNoSpace);
@@ -201,7 +199,7 @@ void VigenereBreak(){
 		        	indiceCoincidence += (float)(alphabetFreq[i]*(alphabetFreq[i]-1.0))/(float)(nbLettre*(nbLettre-1.0));
 		        	//fprintf(logFile, "tmp ind : %f \n", indiceCoincidence);
 		        }
-		        alphabetFreq=RAZFreq(alphabetFreq);
+		        alphabetFreq = RAZFreq(alphabetFreq);
 		        //fprintf(logFile," n lettre : %d\n",nbLettre );
         	}
 	        indiceCoincidence /= tailleKey;
