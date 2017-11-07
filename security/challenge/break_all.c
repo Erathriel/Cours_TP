@@ -112,7 +112,7 @@ le message sans caractere special, l indice de coincidence, la taille de la clef
 le tableau de fréquence des lettres de l alphabet, la taille du message sans 
 caractere speciaux, le tableau de caractere de la cle et le nombre de lettre du message
 */
-char* ChercheCle(int tailleKey, char* messageNoSpace, int* alphabetFreq, int max, char* key, int tailleMessageNoSpace, int nbLettre){
+char* ChercheCleVigenere(int tailleKey, char* messageNoSpace, int* alphabetFreq, int max, char* key, int tailleMessageNoSpace, int nbLettre){
     // recherche dans chaque sous texte la lettre la plus utiliser correspondant au decalage de son texte et trouve la lettre correspondante
     for (int n = 0; n < tailleKey; n++)
     {
@@ -270,7 +270,7 @@ void VigenereBreak(){
         tailleMessageNoSpace=strlen(messageNoSpace);
         tailleKey=CalculCleVigenere(messageNoSpace, indiceCoincidence, tailleKey, alphabetFreq, tailleMessageNoSpace, nbLettre);
         alphabetFreq=RAZFreq(alphabetFreq);
-        key=ChercheCle(tailleKey, messageNoSpace, alphabetFreq, max, key, tailleMessageNoSpace, nbLettre);
+        key=ChercheCleVigenere(tailleKey, messageNoSpace, alphabetFreq, max, key, tailleMessageNoSpace, nbLettre);
         VigenereDecrypt(key,fileName);
 	}
 	else{
