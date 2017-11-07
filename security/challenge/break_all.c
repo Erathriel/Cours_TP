@@ -225,6 +225,11 @@ void VigenereDecrypt(char* key, char* cipherTextName){
 	free(fileName2);
 }
 
+// decrypte le chiffrement par substitution
+void SubstitutionBreak(){
+
+}
+
 // decrypte le chiffre de Vigenere a l aide de la fonction de dichiffrement de Vigenere
 void VigenereBreak(){
 
@@ -304,6 +309,7 @@ void CaesarBreak(){
 
 	if (fileCipherText != NULL && filePlainText != NULL)
 	{
+        // lis le texte et incremente la frequence de chaque lettre lorsquelle est rencontree
 		do{
         	charAt=fgetc(fileCipherText);
         	if (charAt >= 'A' && charAt <= 'Z')
@@ -313,6 +319,7 @@ void CaesarBreak(){
         }
         while(charAt != EOF);
         fclose(fileCipherText);
+        // cherche la lettre la plus utiliser dans le tableau de frequence
         for (int i = 0; i < ALPHABET_SIZE; ++i)
         {
         	if(alphabetFreq[i] > freqCryptedLetter){
@@ -324,6 +331,7 @@ void CaesarBreak(){
         }
 
         printf("La lettre la plus utilisée dans ce text est : %c\n", cryptedLetter);
+        // calcule la valeur du decalage en supposant la lettre la plus utilisee
         key = cryptedLetter - 'E';
         if (key<0)
         {
@@ -331,6 +339,7 @@ void CaesarBreak(){
         }
         printf("La clé est donc : %d\n", key);
         fileCipherText = fopen(fileName, "r");
+        // lis le texte chiffre et le reecris decrypte dans un autre fichier
         if (fileCipherText !=NULL)
         {
         	do{
