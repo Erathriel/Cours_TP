@@ -7,15 +7,10 @@
 #define ALPHABET_SIZE 26
 #define INDICE_FR 0.075
 
-/*void RetourMenu(){
-	unsigned char choix2;
-	printf("-------------------------------------\n");
-	printf("Voulez vous retournez au menu ? (O/N) \n");
-	scanf ("%c", &choix2);
-	//printf("%d\n", choix2);
-	
-}*/
-
+/* stock le text sans caractere speciaux et prend en parametre
+le message stocker, la taille du message et le tableau dans lequel
+on veut stocker le texte sans caractere special
+*/
 char* TxtSansSpeChar(char* mess, int tailleMess, char* messNoSpace){
     int tailleMessageNoSpace=0;
     for (int c = 0; c < tailleMess; c++)
@@ -29,9 +24,12 @@ char* TxtSansSpeChar(char* mess, int tailleMess, char* messNoSpace){
     return messNoSpace;
 }
 
-//int CalculCleVigenere(char* txtPropre)
 
-// lis le texte ecrit dans un fichier et le stock dans un tableau de caractere
+
+/* lis le texte ecrit dans un fichier et le stock dans un tableau de caractere
+prend en parametre le fichier .txt du texte chiffre et le tableau de caratere dans 
+lequel on stock les caractere présent dans le fichier
+*/
 char* LireTxt(FILE* file, char* mess){
     char charAt;
     int tailleMessage=0;
@@ -45,7 +43,9 @@ char* LireTxt(FILE* file, char* mess){
     return mess;
 }
 
-// remet a 0 les frequences d apparition des lettres de l alphabet
+/* remet a 0 les frequences d apparition des lettres de l alphabet prend en parametre
+le tableau des frequences des lettres de l'alphabet
+*/
 int* RAZFreq(int* alphaFreq){
 
     for (int j = 0; j < ALPHABET_SIZE; j++)
@@ -56,9 +56,45 @@ int* RAZFreq(int* alphaFreq){
     return alphaFreq;
 }
 
+/* calcul la taille de la cle utilisee pour chiffrer le texte prenant en parametre
+le message sans caractere special, l indice de coincidence, la taille de la clef, 
+le tableau de fréquence des lettres de l alphabet, la taille du message sans 
+caractere speciaux et le nombre de lettre du message
+*/
+int CalculCleVigenere(char* messageNoSpace, float indiceCoincidence, int tailleKey, int* alphabetFreq, int tailleMessageNoSpace, int nbLettre){
+
+    while(tailleKey < 16 && (indiceCoincidence < 0.075 || indiceCoincidence > 0.085)){
+            indiceCoincidence = 0;
+            tailleKey++;
+            for (int k = 0; k < tailleKey; k++)
+            {
+                nbLettre=0;
+                for (int l = 0; l < tailleMessageNoSpace; l+=tailleKey)
+                {
+                    unsigned char c = (unsigned char) messageNoSpace[l+k];
+                    if ((c >= 'A' && c <= 'Z'))
+                    {
+                        alphabetFreq[c -'A'] +=1;
+                        nbLettre++;
+                    }
+                }
+                for (int i = 0; i < ALPHABET_SIZE; ++i)
+                {
+                    unsigned char c = (unsigned char) (i+'A');
+                    indiceCoincidence += (float)(alphabetFreq[i]*(alphabetFreq[i]-1.0))/(float)(nbLettre*(nbLettre-1.0));
+                }
+                alphabetFreq = RAZFreq(alphabetFreq);
+                //fprintf(logFile," n lettre : %d\n",nbLettre );
+            }
+            indiceCoincidence /= tailleKey;
+        }
+        printf("La taille de la clé est de : %d\n\n\n", tailleKey);
+        return tailleKey;
+}
+
 /* 
 fonction de déchiffrement de Vigenere prenant en paramètre la clef obtenue dans 
-la fonction Vigenere_break et le nom du fichier du text crypter (du type : texte.txt)
+la fonction Vigenere_break et le nom du fichier du texte chiffrer (du type : texte.txt)
 */
 void VigenereDecrypt(char* key, char* cipherTextName){
 	FILE* fileCipherText=NULL;
@@ -173,43 +209,7 @@ void VigenereBreak(){
         fclose(fileCipherText);
         messageNoSpace=TxtSansSpeChar(message, tailleMessage, messageNoSpace);
         tailleMessageNoSpace=strlen(messageNoSpace);
-        while(tailleKey < 16 && (indiceCoincidence < 0.075 || indiceCoincidence > 0.085)){
-        	indiceCoincidence = 0;
-        	tailleKey++;
-        	for (int k = 0; k < tailleKey; k++)
-        	{
-        		//fprintf(logFile, "---------------------DEBUT boucle %d ----------------------\n", k);
-        		nbLettre=0;
-        		for (int l = 0; l < tailleMessageNoSpace; l+=tailleKey)
-	        	{
-	        		unsigned char c = (unsigned char) messageNoSpace[l+k];
-	        		if ((c >= 'A' && c <= 'Z'))
-	        		{
-	        			alphabetFreq[c -'A'] +=1;
-	        			nbLettre++;
-	        			//fprintf(logFile, "lettre lu : %c\n", c);
-	        		}
-	        	}
-	        	for (int i = 0; i < ALPHABET_SIZE; ++i)
-		        {
-		        	unsigned char c = (unsigned char) (i+'A');
-		        	/*fprintf(logFile,"La lettre %c apparait %d fois dans le texte.\n", c ,alphabetFreq[i]);
-		        	fprintf(logFile, "alpha freq : %d \n",alphabetFreq[i] );
-		        	fprintf(logFile,"numerateur : %f\n", (float)(alphabetFreq[i]*(alphabetFreq[i]-1.0)));
-		        	fprintf(logFile, "denominateur : %f\n",(float)(nbLettre*(nbLettre-1.0)) );
-		        	fprintf(logFile, "res : %f\n", (float)(alphabetFreq[i]*(alphabetFreq[i]-1.0))/(float)(nbLettre*(nbLettre-1.0)));*/
-		        	indiceCoincidence += (float)(alphabetFreq[i]*(alphabetFreq[i]-1.0))/(float)(nbLettre*(nbLettre-1.0));
-		        	//fprintf(logFile, "tmp ind : %f \n", indiceCoincidence);
-		        }
-		        alphabetFreq=RAZFreq(alphabetFreq);
-		        //fprintf(logFile," n lettre : %d\n",nbLettre );
-        	}
-	        indiceCoincidence /= tailleKey;
-	        /*fprintf(logFile,"indice : %f\n",indiceCoincidence );
-	        fprintf(logFile,"tailleMessage : %d\n", tailleMessageNoSpace);
-	        fprintf(logFile,"key : %d\n\n\n",tailleKey );*/
-        }
-        printf("%d\n\n\n", tailleKey);
+        tailleKey=CalculCleVigenere(messageNoSpace, indiceCoincidence, tailleKey, alphabetFreq, tailleMessageNoSpace, nbLettre);
         alphabetFreq=RAZFreq(alphabetFreq);
         for (int n = 0; n < tailleKey; n++)
         {
@@ -250,7 +250,6 @@ void VigenereBreak(){
 	free(messageNoSpace);
     free(message);
     free(alphabetFreq);
-	//fclose(logFile);
 }
 
 // decrypte le chiffre de cesar
