@@ -432,6 +432,7 @@ void VigenereBreak(){
         alphabetFreq=RAZFreq(alphabetFreq);
         key=ChercheCleVigenere(tailleKey, messageNoSpace, alphabetFreq, max, key, tailleMessageNoSpace, nbLettre);
         VigenereDecrypt(key,fileName);
+        printf("Message decrypté\n");
 	}
 	else{
 		printf("Impossible de lire le fichier %s !\n", fileName);
@@ -557,23 +558,51 @@ void FaireChoix(){
 			printf("-------------------------------------\n");
 			printf("Choix cesar\n");
 			CaesarBreak();
+            RetourMenu();
 			break;
         // decryptage avec Vigenere
 		case 2:
 			printf("-------------------------------------\n");
 			printf("Choix Vigenere\n");
 			VigenereBreak();
+            RetourMenu();
 			break;
         // decryptage avec Substitution
 		case 3:
 			printf("-------------------------------------\n");
 			printf("Choix substitution\n");
             SubstitutionBreak();
+            RetourMenu();
 			break;
 		default:
+            system ("clear");
 			printf("Votre choix n'est pas entre 1,2 ou 3 !\n");
+            FaireChoix();
 			break;
 	}
+}
+
+// retour au menu
+void RetourMenu(){
+    int choix = 0;
+    printf("Voulez vous revenir au menu et décrypter un autre texte ou utiliser une autre méthode de décryptage ? \n");
+    printf("1) Oui\n2) Non\n");
+    scanf ("%d", &choix);
+    switch(choix){
+        case 1:
+            system ("clear");
+            FaireChoix();
+            break;
+        case 2:
+            system ("clear");
+            printf("Fin du programme\n");
+            break;
+        default:
+            system ("clear");
+            printf("Votre choix n'est pas proposé ! Recommencer !\n");
+            RetourMenu();
+            break;
+    }
 }
 
 // programme principale
