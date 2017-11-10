@@ -1,1 +1,1 @@
-To create folder in the git project !
+Organize the folder of this project !

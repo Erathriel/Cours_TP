@@ -9,6 +9,7 @@
 
 int main (int argc, char *argv[]) {
     struct fa test;
+    int nbTransition;
     FILE* fichier = NULL;
     fichier= fopen("Automate.txt", "w");
     fa_create(&test,2, 5);
@@ -29,6 +30,8 @@ int main (int argc, char *argv[]) {
     fa_add_transition(&test,4,'b',4);
     fa_remove_transition(&test,4,'b',4);
     //fa_remove_state(&test,0);
+    nbTransition=fa_count_transitions(&test);
+    printf("%d\n",nbTransition );
     fa_pretty_print(&test, fichier);
     fa_destroy(&test);
     return 0;
