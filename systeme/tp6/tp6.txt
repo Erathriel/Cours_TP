@@ -1,0 +1,81 @@
+/***************************************************
+
+Fichier : tp6.c
+Date de creation : 01 novembre 2017
+Auteur : NORO Geoffrey & PEGEOT Antoine
+
+***************************************************/
+
+ Q1 :
+
+ Q2 : La commande pstree affiche la liste des processus en cours d'execution sous la forme d'un arbre et fusionne les branche si 
+ un processus est lancer plusieurs fois. Par exemple : ├─upowerd───2*[{upowerd}] De plus les accolades indique que ceci est un 
+ thread d'un processus. Il est plus simple d'observer un lien de parenté avec pstree qu'avec ps.
+
+ Q3 : La commande ps affiche la liste des processus en cours de manière statique alors que top l'affiche de manière dynamique
+ et donne l'utilisation de la memoire et de la CPU par les processus en cours en temps réel jusqu'à stopper la commande.
+
+ Q4 : ps -ax
+ 		 Here are the different values that the s, stat and state output
+       specifiers (header "STAT" or "S") will display to describe the state of
+       a process:
+               D    uninterruptible sleep (usually IO)
+               R    running or runnable (on run queue)
+               S    interruptible sleep (waiting for an event to complete)
+               T    stopped, either by a job control signal or because it is
+                    being traced
+               W    paging (not valid since the 2.6.xx kernel)
+               X    dead (should never be seen)
+               Z    defunct ("zombie") process, terminated but not reaped by
+                    its parent
+
+ For BSD formats and when the stat keyword is used, additional
+       characters may be displayed:
+               <    high-priority (not nice to other users)
+               N    low-priority (nice to other users)
+               L    has pages locked into memory (for real-time and custom IO)
+               s    is a session leader
+               l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads
+                    do)
+               +    is in the foreground process group
+
+
+
+
+ Q5 : ps -ef | wc -l => 268
+
+ Q6 : top | grep "Tâches:"
+
+ Q7 : nombre de processeur :
+	   - lscpu | grep "Socket(s):" => Socket(s): 1
+	   - grep -w "physical id" /proc/cpuinfo -m 1 => physical id: 0
+ nombre de coeur : 
+     - grep -w "cpu cores" /proc/cpuinfo -m 1 => cpu cores: 4
+	   - lscpu | grep "Cœur(s) par socket :" => Cœur(s) par socket : 4
+ hyperthreading :
+	   - lscpu | grep "Thread(s) par cœur :" => Thread(s) par cœur : 2
+	   - grep -w "ht" /proc/cpuinfo -m 1 => flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch epb intel_pt tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm mpx rdseed adx smap clflushopt xsaveopt xsavec xgetbv1 dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp
+
+ Q8 :
+ Voir le fichier Q8.c
+
+
+ Q9 :
+ ps -lax 
+ top 
+ ( PRI ) Lorsque la valeur de la priorité est négative top affiche "rt". ps affiche la valeur exacte.
+ ( NI ) Top affiche "0" lorsque la valeur de la priorité ( PRI ) est négative ( "rt" ) alors que ps affiche "-" lorsque la valeur de la priorité ( PRI ) est négative.
+
+ Q10 :
+ voir le fichier Q10.c
+ Sa priorité par défaut PRI est : 20 NI est : 0
+ commande renice newPrio PID
+
+ Q11 :
+ voir le fichier Q11-12.c
+
+ Q12 :
+ voir le fichier Q11-12.c
+
+ Q13 :
+ voir le fichier Q13.c
