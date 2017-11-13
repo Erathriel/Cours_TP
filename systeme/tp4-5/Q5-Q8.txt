@@ -1,0 +1,8 @@
+Q5 : 
+La commande free permet d'afficher l'utilisation de la mémoire RAM. ( Mémoire totale, mémoire utilisée, mémoire libre, ...)
+Pour obtenir un nouvel affichage toutes les 5 secondes on fera appel à la commande " watch -n 5 free ".
+On peut constater que l'utilisation de la mémoire varie constamment.
+
+Q8:
+Le processus " lightdm " possède un defaut de page de 2.
+( Commande utilisée : " ps -eo pid,pagein,commande " )
