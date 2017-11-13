@@ -1,10 +1,10 @@
 Initial states:
-        0 1 
+        0 
 Final states:
-        1 4 
+        1 
 Transitions:
         For state 0:
-                For letter a:1 2 3 
+                For letter a:1 
                 For letter b:
         For state 1:
                 For letter a:3 

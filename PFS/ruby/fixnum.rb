@@ -9,4 +9,12 @@ end
 	p fibonacci(0)
 
 def fibonacci(n)
+	left = 0
+	right = 1
+	counter = 0
+	while counter <= n
+		left,right = right,right+left
+		counter += 1
+	end
+	right
 end

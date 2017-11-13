@@ -98,6 +98,46 @@ size_t fa_count_transitions(const struct fa *self){
     return transitionNumber;
 }
 
+bool fa_is_deterministic(const struct fa *self){
+    bool deterministic=true;
+    int countInit=0;
+    int countFinal=0;
+    int countTransitionLetter=0;
+    for(int i=0; i<self->state_count;i++){
+        if(self->states[i].is_initial == true){
+            countInit++;
+        }
+    }
+    for(int i=0; i<self->state_count;i++){
+        if(self->states[i].is_final == true){
+            countFinal++;
+        }
+    }
+    if (countInit>1 || countFinal>1)
+    {
+        deterministic=false;
+    }
+    for (int i = 0; i < self->state_count; ++i)
+    {
+        for (int j = 0; j < self->alpha_count; ++j)
+        {
+            countTransitionLetter=0;
+            for (int k = 0; k < self->transitions[i][j].capacity; ++k)
+            {
+                if (self->transitions[i][j].states[k]==1)
+                {
+                    countTransitionLetter++;
+                }
+                if (countTransitionLetter>1)
+                {
+                    deterministic=false;
+                    return deterministic;
+                }
+            }
+        }
+    }
+}
+
 void fa_pretty_print(const struct fa *self, FILE *out){
     if(out != NULL){
         fprintf(out, "Initial states:\n        ");
