@@ -16,6 +16,7 @@ int main(int argc, char const *argv[])
 {
 	// Q11
 	long int CPU = sysconf(_SC_NPROCESSORS_ONLN);
+
 	// Q12
 	int tmp=0;
 	int cpuActive = sched_getcpu();
@@ -30,8 +31,9 @@ int main(int argc, char const *argv[])
 			printf("Le cpu est toujours : %d\n",tmp );
 		}
 		else{
-			printf("Le cpu est devenu : %d \n",tmp );
+			printf("Le cpu à changer ! C'est devenu : %d \n", tmp);
 			cpuActive=tmp;
+			exit(1);
 		}
 	}
 

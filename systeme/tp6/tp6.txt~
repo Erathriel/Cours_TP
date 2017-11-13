@@ -50,7 +50,7 @@ Auteur : NORO Geoffrey & PEGEOT Antoine
 	   - lscpu | grep "Socket(s):" => Socket(s): 1
 	   - grep -w "physical id" /proc/cpuinfo -m 1 => physical id: 0
  nombre de coeur : 
-     	   - grep -w "cpu cores" /proc/cpuinfo -m 1 => cpu cores: 4
+     - grep -w "cpu cores" /proc/cpuinfo -m 1 => cpu cores: 4
 	   - lscpu | grep "Cœur(s) par socket :" => Cœur(s) par socket : 4
  hyperthreading :
 	   - lscpu | grep "Thread(s) par cœur :" => Thread(s) par cœur : 2
