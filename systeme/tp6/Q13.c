@@ -17,7 +17,9 @@ int main(int argc, char const *argv[])
 	
 	int tmp=0;
 	int cpuActive = sched_getcpu();
-	cpu_set_t setCPU=CPU_SET(cpuActive);
+	cpu_set_t setCPU;
+	CPU_ZERO(&setCPU);
+	CPU_SET(0,&setCPU);
 	if (sched_setaffinity(getpid(), sizeof(setCPU), &setCPU) == -1)
 	{
 		perror("affinity error");
