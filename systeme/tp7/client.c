@@ -23,15 +23,15 @@ typedef struct sockaddr SOCKADDR;
 
 
 #include <stdio.h>
-#include <stdlib.h> 
-#define PORT 6666
+#include <stdlib.h>
 
-int main(void)
+int main(int argc, char *argv[])
 {
     int erreur = 0;
     SOCKET sock;
     SOCKADDR_IN sin;
-    char buffer[32] = "Hello World !";
+    char buffer[1024];
+    int port=atoi(argv[1]);
 
     if (!erreur)
     {
@@ -40,14 +40,15 @@ int main(void)
        // config socket
        sin.sin_addr.s_addr = inet_addr("127.0.0.1");
        sin.sin_family = AF_INET;
-       sin.sin_port = htons(PORT);
+       sin.sin_port = htons(port);
        bzero(sin.sin_zero,8);
 
        //connexion au serveur
        if (connect(sock, (SOCKADDR*)&sin, sizeof(sin)) != SOCKET_ERROR)
        {
             printf("Connexion à %s sur le port %d\n", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
-            //send(sock, buffer, sizeof(buffer), 0);
+            recv(sock, buffer, sizeof(buffer), 0);
+            printf("%s\n",buffer);
        }
        else 
        {
