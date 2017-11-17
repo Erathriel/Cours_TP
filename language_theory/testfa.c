@@ -29,7 +29,7 @@ int main (int argc, char *argv[]) {
     fa_add_transition(&test,4,'a',4);
     fa_add_transition(&test,4,'b',4);
     fa_remove_transition(&test,4,'b',4);*/
-    fa_remove_state(&test,1);
+    //fa_remove_state(&test,1);
     fa_add_transition(&test, 0,'a',1);
     fa_add_transition(&test, 0,'b',2);
     fa_add_transition(&test, 1,'a',2);

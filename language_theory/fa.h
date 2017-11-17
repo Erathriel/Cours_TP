@@ -28,6 +28,10 @@ struct state_set {
     size_t *states;
 };
 
+struct graph
+{
+	bool **transitions;
+};
 
 void fa_create(struct fa *self, size_t alpha_count, size_t state_count);
 
