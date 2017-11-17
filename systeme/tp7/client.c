@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
     {
        sock = socket(AF_INET, SOCK_STREAM, 0); // creation socket
 
-       // config socket
-       sin.sin_addr.s_addr = inet_addr("127.0.0.1");
+       // config socke
+       sin.sin_addr.s_addr = inet_addr(argv[2]);
        sin.sin_family = AF_INET;
        sin.sin_port = htons(port);
        bzero(sin.sin_zero,8);
@@ -57,5 +57,6 @@ int main(int argc, char *argv[])
         shutdown(sock,SHUT_RDWR);
         close(sock);
     }
+    
     return EXIT_SUCCESS;
 }
