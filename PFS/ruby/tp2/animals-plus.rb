@@ -119,6 +119,9 @@ class Animal
 end
 
 
-p $a.do_with_name("toto")
+#p $a.do_with_name("toto")
 
+$kingkong.gimme do ' A men after midnight' end
+#$kingkong.gimme
+$kingkong.do_with_name do |name| puts "#{$name} and Jane" end
 
