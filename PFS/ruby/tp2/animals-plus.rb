@@ -121,7 +121,32 @@ end
 
 #p $a.do_with_name("toto")
 
+=begin
 $kingkong.gimme do ' A men after midnight' end
-#$kingkong.gimme
+$kingkong.gimme
 $kingkong.do_with_name do |name| puts "#{$name} and Jane" end
+=end
+$a1 = [7,11,2017]
+=begin
+$a1.each do |x| p x end
+$a1.each_index do |index| p index end
+$a1.each_with_index do |x,index| p [x,index] end
+$a1.select do |x| x.odd? end
+=end
 
+#p($a1.inject(0) do |x,y| x+y end)
+#p((1..10).inject(1) do |x,y| x*y end)
+
+class Fixnum
+  def fact
+    if self>0
+      (1..self).inject(1) do |x,y| x*y end
+      end
+  end
+end
+
+n=10
+
+p n.fact
+
+p 10.fact
