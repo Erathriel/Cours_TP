@@ -69,10 +69,10 @@ p update_your_dapartement('124th departement')
 =end
 
 def target_p(s)
-	if m= /(\(.*\)\s*)+\./.match(s)
+	if m= /(\(.*\)\s*)++\./.match(s)
 		m[0]
 	end
 end
 
-p target_p('(H A B) (D E F). (G HI.')
-p target_p('(H A B) (D E F). (G HI)')
+p target_p('(H A B) (D E F). (G H I).')
+p target_p('(H A B) (D E F). (G H I)')
