@@ -115,8 +115,39 @@ bool fa_is_deterministic(const struct fa *self){
     }
     if (countInit>1 || countFinal>1)
     {
+        printf("1");
         deterministic=false;
     }
+    for (int i = 0; i < self->state_count; ++i)
+    {
+        for (int j = 0; j < self->alpha_count; ++j)
+        {
+                    countTransitionLetter=0;
+                    for (int k = 0; k < self->transitions[i][j].capacity; ++k)
+                    {
+                        if (self->transitions[i][j].states[k]==1)
+                        {
+                            countTransitionLetter++;
+                        }
+                        if (self->transitions[k][j].states[i]==1)
+                        {
+                            countTransitionLetter++;
+                        }
+                        if (countTransitionLetter>1)
+                        {
+                    deterministic=false;
+                            printf("2");
+                    return deterministic;
+                }
+            }
+        }
+    }
+}
+
+bool fa_is_complete(const struct fa *self) {
+    bool complete=true;
+    int countTransitionLetter=0;
+
     for (int i = 0; i < self->state_count; ++i)
     {
         for (int j = 0; j < self->alpha_count; ++j)
@@ -128,10 +159,55 @@ bool fa_is_deterministic(const struct fa *self){
                 {
                     countTransitionLetter++;
                 }
-                if (countTransitionLetter>1)
+            }
+            if (countTransitionLetter<1)
+            {
+                complete=false;
+                printf("2");
+                return complete;
+            }
+        }
+    }
+}
+
+void fa_make_complete(struct fa *self) {
+    int countTransitionLetter=0;
+    int s = 0;
+    if (fa_is_complete(self)) {
+        printf("L'automate est déjà complet");
+    }
+    else {
+
+        self->state_count = self->state_count+1;
+
+        self->states = realloc(self->states, self->state_count *sizeof(struct state));
+        self->transitions=realloc(self->transitions, self->state_count * sizeof(struct state_set));
+
+        for(int i=0; i<self->state_count;i++){
+            self->transitions[i]=realloc(self->transitions[i], self->alpha_count * sizeof(struct state_set));
+            for(int j=0; j<self->alpha_count;j++){
+                self->transitions[i][j].states=realloc(self->transitions[i][j].states, self->state_count * sizeof(size_t));
+            }
+        }
+
+
+
+        for (int i = 0; i < self->state_count-1; ++i)
+        {
+            for (int j = 0; j < self->alpha_count; ++j)
+            {
+                countTransitionLetter=0;
+                for (int k = 0; k < self->transitions[i][j].capacity-1; ++k)
                 {
-                    deterministic=false;
-                    return deterministic;
+                    if (self->transitions[i][j].states[k]==1)
+                    {
+                        countTransitionLetter++;
+                    }
+                    s=k;
+                }
+                if (countTransitionLetter<1)
+                {
+                    fa_add_transition(self, i,(char)(j+97),self->state_count);
                 }
             }
         }
