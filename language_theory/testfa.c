@@ -18,18 +18,16 @@ int main (int argc, char *argv[]) {
     fa_set_state_final(&test, 3);
     fa_set_state_final(&test, 4);
     // Uniquement avec un caractère minuscule à modifier plus tard...
-    //fa_remove_state(&test,1);
     fa_add_transition(&test, 0,'a',1);
     fa_add_transition(&test, 0,'b',2);
     fa_add_transition(&test, 1,'a',2);
     fa_add_transition(&test, 1,'b',2);
     fa_add_transition(&test, 2,'a',3);
-   //fa_add_transition(&test, 2,'b',4);
+   fa_add_transition(&test, 2,'b',4);
    fa_add_transition(&test, 3,'a',4);
-   //fa_add_transition(&test, 3,'b',4);
-    //fa_add_transition(&test, 4,'a',4);
-   // fa_add_transition(&test, 4,'b',3);
-        nbTransition=fa_count_transitions(&test);
+   fa_add_transition(&test, 3,'b',4);
+    fa_add_transition(&test, 4,'a',4);
+        /*nbTransition=fa_count_transitions(&test);
         printf("%d\n",nbTransition );
         if (fa_is_deterministic(&test))
         {
@@ -54,13 +52,14 @@ int main (int argc, char *argv[]) {
         }
         else{
             printf("N'est pas complet\n");
-        }
+        }*/
+
+        fa_remove_state(&test,2);
 
         fa_pretty_print(&test, fichier);
-        // fa_destroy(&test);
 
 
-        struct graph g;
+        /*struct graph g;
         g.size = 3;
         g.transition = calloc(g.size,sizeof(struct state));
         for(int i=0; i<g.size;i++) {
@@ -85,21 +84,21 @@ int main (int argc, char *argv[]) {
 
         if (graph_has_path(&g, 0, 2)) {
             printf("chemin \n");
-        }
+        }*/
 
-        struct graph g2;
+      /* struct graph g2;
         graph_create_from_fa(&g2, &test, true);
 
         if (graph_has_path(&g2, 1, 3)) {
-        printf("chemin 2 \n");
-    }
+            printf("chemin 2 \n");
+        }
 
     if(fa_is_language_empty(&test)) {
         printf("Langage non vide");
     }
     else {
         printf("Langage vide");
-    }
+    }*/
 
    // fa_destroy(&test);
 

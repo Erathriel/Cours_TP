@@ -73,9 +73,14 @@ void fa_remove_state(struct fa *self, size_t state){
             fa_remove_transition(self, state, c, i);
         }
     }
-    for (int i = state; i < self->state_count; ++i)
+    // a commenter pour nd soluce
+    for (int i = state; i < self->state_count-1; ++i)
     {
         self->states[i]=self->states[i+1];
+        for (int j = 0; j < self->alpha_count; ++j)
+        {
+            self->transitions[i][j].states = self->transitions[i+1][j].states;
+        }
     }
     self->state_count--;
 }
@@ -282,15 +287,19 @@ bool graph_has_path(const struct graph *self,  size_t from, size_t to) {
 
 void graph_create_from_fa(struct graph *self, const struct fa *fa , bool inverted) {
     self->size = fa->state_count;
+    printf("test\n");
     self->transition = calloc(self->size, sizeof(struct state));
+    printf("test2\n");
     for (int i = 0; i < self->size; i++) {
         self->transition[i] = calloc(self->size, sizeof(struct state));
+        printf("test3\n");
     }
     for (int i = 0; i < self->size; i++) {
         for (int j = 0; j < fa->alpha_count; j++) {
             for (int k = 0; k < self->size; k++) {
                 if (fa->transitions[i][j].states[k] == 1) {
                     self->transition[i][k] = true;
+                    printf("test4\n");
                 }
             }
         }
