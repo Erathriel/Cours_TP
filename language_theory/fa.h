@@ -28,10 +28,18 @@ struct state_set {
     size_t *states;
 };
 
-struct graph
-{
-	bool **transitions;
+struct graph {
+    size_t size;
+    bool **transition;
 };
+
+void graph_depth_first_search(const struct graph *self, size_t state, bool* visited);
+
+bool graph_has_path(const struct graph *self, size_t from, size_t to);
+
+void graph_create_from_fa(struct graph *self, const struct fa *fa , bool inverted);
+
+void graph_destroy(struct graph *self);
 
 void fa_create(struct fa *self, size_t alpha_count, size_t state_count);
 
@@ -56,5 +64,7 @@ bool fa_is_complete(const struct fa *self);
 void fa_make_complete(struct fa *self);
 
 void fa_pretty_print(const struct fa *self, FILE *out);
+
+bool fa_is_language_empty(const struct fa *self);
 
 #endif //TP1TL_FA_H

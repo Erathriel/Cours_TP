@@ -6,8 +6,6 @@
 //
 // Created by Antoine on 15/09/2017.
 //
-
-// fonctionne
 void fa_create(struct fa *self, size_t alpha_count, size_t state_count) {
     self->alpha_count = alpha_count;
     self->state_count = state_count;
@@ -24,7 +22,6 @@ void fa_create(struct fa *self, size_t alpha_count, size_t state_count) {
 
 }
 
-// fonctionne
 void fa_destroy(struct fa *self) {
     if (self->states == NULL && self->transitions == NULL) {
         return;
@@ -45,17 +42,14 @@ void fa_destroy(struct fa *self) {
 
 }
 
-// fonctionne
 void fa_set_state_initial(struct fa *self, size_t state) {
     self->states[state].is_initial=true;
 }
 
-// fonctionne
 void fa_set_state_final(struct fa *self, size_t state){
     self->states[state].is_final=true;
 }
 
-// fonctionne
 void fa_add_transition(struct fa *self,size_t from, char alpha, size_t to) {
     self->transitions[from][(int)alpha-(int)'a'].size++;
     self->transitions[from][(int)alpha-(int)'a'].capacity=self->state_count;
@@ -63,7 +57,6 @@ void fa_add_transition(struct fa *self,size_t from, char alpha, size_t to) {
 
 }
 
-// fonctionne
 void fa_remove_transition(struct fa *self,size_t from, char alpha, size_t to) {
     self->transitions[from][(int)alpha-(int)'a'].states[to]=0;
     self->transitions[from][(int)alpha-(int)'a'].capacity=self->state_count;
@@ -87,7 +80,6 @@ void fa_remove_state(struct fa *self, size_t state){
     self->state_count--;
 }
 
-// fonctionne
 size_t fa_count_transitions(const struct fa *self){
     int transitionNumber=0;
     for (int i = 0; i < self->state_count; ++i)
@@ -106,7 +98,6 @@ size_t fa_count_transitions(const struct fa *self){
     return transitionNumber;
 }
 
-// fonctionne
 bool fa_is_deterministic(const struct fa *self){
     bool deterministic=true;
     int countInit=0;
@@ -124,6 +115,7 @@ bool fa_is_deterministic(const struct fa *self){
     }
     if (countInit>1 || countFinal>1)
     {
+        printf("1");
         deterministic=false;
     }
     for (int i = 0; i < self->state_count; ++i)
@@ -144,6 +136,7 @@ bool fa_is_deterministic(const struct fa *self){
                         if (countTransitionLetter>1)
                         {
                     deterministic=false;
+                            printf("2");
                     return deterministic;
                 }
             }
@@ -151,7 +144,6 @@ bool fa_is_deterministic(const struct fa *self){
     }
 }
 
-// fonctionne
 bool fa_is_complete(const struct fa *self) {
     bool complete=true;
     int countTransitionLetter=0;
@@ -177,7 +169,6 @@ bool fa_is_complete(const struct fa *self) {
     }
 }
 
-// fonctionne
 void fa_make_complete(struct fa *self) {
     int countTransitionLetter=0;
     int s = 0;
@@ -188,26 +179,28 @@ void fa_make_complete(struct fa *self) {
 
         self->state_count = self->state_count+1;
 
-        self->states = realloc(self->states, self->state_count *sizeof(struct state));
-        self->transitions=realloc(self->transitions, self->state_count * sizeof(struct state_set));
+                        self->states = realloc(self->states, self->state_count *sizeof(struct state));
+                        self->transitions=realloc(self->transitions, self->state_count * sizeof(struct state_set));
 
-        for(int i=0; i<self->state_count;i++){
-            self->transitions[i]=realloc(self->transitions[i], self->alpha_count * sizeof(struct state_set));
-            for(int j=0; j<self->alpha_count;j++){
-                self->transitions[i][j].states=realloc(self->transitions[i][j].states, self->state_count * sizeof(size_t));
-            }
-        }
+                        for(int i=0; i<self->state_count;i++){
+                            self->transitions[i]=realloc(self->transitions[i], self->alpha_count * sizeof(struct state_set));
+                            for(int j=0; j<self->alpha_count;j++){
+                                self->transitions[i][j].states=realloc(self->transitions[i][j].states, self->state_count * sizeof(size_t));
+                            }
+                        }
 
-        for (int i = 0; i < self->state_count; ++i)
-        {
-            for (int j = 0; j < self->alpha_count; ++j)
-            {
-                countTransitionLetter=0;
-                for (int k = 0; k < self->transitions[i][j].capacity; ++k)
-                {
-                    if (self->transitions[i][j].states[k]==1)
-                    {
-                        countTransitionLetter++;
+
+
+                        for (int i = 0; i < self->state_count; ++i)
+                        {
+                            for (int j = 0; j < self->alpha_count; ++j)
+                            {
+                                countTransitionLetter=0;
+                                for (int k = 0; k < self->transitions[i][j].capacity; ++k)
+                                {
+                                    if (self->transitions[i][j].states[k]==1)
+                                    {
+                                        countTransitionLetter++;
                     }
                     s=k;
                 }
@@ -220,7 +213,7 @@ void fa_make_complete(struct fa *self) {
     }
 }
 
-// fonctionne
+
 void fa_pretty_print(const struct fa *self, FILE *out){
     if(out != NULL){
         fprintf(out, "Initial states:\n        ");
@@ -260,4 +253,78 @@ void fa_pretty_print(const struct fa *self, FILE *out){
     {
         printf("Can't open the file...\n");
     }
+}
+
+void graph_depth_first_search(const struct graph *self, size_t state, bool* visited) {
+    visited[state] = true;
+    for(int i = 0; i < self->size; i++) {
+        if (self->transition[state][i] == true) {
+            if (visited[i] == false) {
+                graph_depth_first_search(self, i, visited);
+            }
+        }
+    }
+}
+
+bool graph_has_path(const struct graph *self,  size_t from, size_t to) {
+    bool visited[self->size];
+    for (int i =0; i < self->size; i++) {
+        visited[i] = false;
+    }
+    graph_depth_first_search(self, from, visited);
+    if (visited[to]) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void graph_create_from_fa(struct graph *self, const struct fa *fa , bool inverted) {
+    self->size = fa->state_count;
+    self->transition = calloc(self->size, sizeof(struct state));
+    for (int i = 0; i < self->size; i++) {
+        self->transition[i] = calloc(self->size, sizeof(struct state));
+    }
+    for (int i = 0; i < self->size; i++) {
+        for (int j = 0; j < fa->alpha_count; j++) {
+            for (int k = 0; k < self->size; k++) {
+                if (fa->transitions[i][j].states[k] == 1) {
+                    self->transition[i][k] = true;
+                }
+            }
+        }
+    }
+}
+
+void graph_destroy(struct graph *self) {
+    if (self->transition == NULL) {
+        return;
+    }
+    for (size_t i=0;i<self->size;i++){
+        free(self->transition[i]);
+    }
+    free(self->transition);
+    self->transition = NULL;
+}
+
+bool fa_is_language_empty(const struct fa *self) {
+    struct graph g;
+    graph_create_from_fa(&g, self, true);
+    printf("1");
+    for (int i = 0; i < self->state_count; i++) {
+        if (self->states[i].is_initial == true ) {
+            printf("i : %d \n", i);
+            for (int j = 0; j < self->state_count; j++) {
+                if (self->states[j].is_final == true) {
+                    printf("j : %d \n", j);
+                   if(graph_has_path(&g, i, j)) {
+                       printf("4");
+                       return true;
+                   }
+                }
+            }
+        }
+    }
+    return false;
 }
