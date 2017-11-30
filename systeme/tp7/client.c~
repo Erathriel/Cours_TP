@@ -33,34 +33,30 @@ int main(int argc, char *argv[])
     char buffer[1024];
     int port=atoi(argv[1]);
 
-    sock = socket(AF_INET, SOCK_STREAM, 0); // creation socket
-
-    if(sock == INVALID_SOCKET)
+    if (!erreur)
     {
-      printf("socket()\n");
-      return EXIT_FAILURE;
-    }
+       sock = socket(AF_INET, SOCK_STREAM, 0); // creation socket
 
-    // config socket
-    sin.sin_addr.s_addr = inet_addr(argv[2]);
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(port);
-    bzero(sin.sin_zero,8);
+       // config socke
+       sin.sin_addr.s_addr = inet_addr(argv[2]);
+       sin.sin_family = AF_INET;
+       sin.sin_port = htons(port);
+       bzero(sin.sin_zero,8);
 
-    //connexion au serveur
-    if (connect(sock, (SOCKADDR*)&sin, sizeof(sin)) != SOCKET_ERROR)
-    {
-      printf("Connexion à %s sur le port %d\n", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
-      recv(sock, buffer, sizeof(buffer), 0);
-      printf("%s\n",buffer);
+       //connexion au serveur
+       if (connect(sock, (SOCKADDR*)&sin, sizeof(sin)) != SOCKET_ERROR)
+       {
+            printf("Connexion à %s sur le port %d\n", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
+            recv(sock, buffer, sizeof(buffer), 0);
+            printf("%s\n",buffer);
+       }
+       else 
+       {
+            printf("Impossible de se connecter\n");
+        }
+        shutdown(sock,SHUT_RDWR);
+        close(sock);
     }
-    else 
-    {
-      printf("accept()\n");
-      return EXIT_FAILURE;
-    }
-    shutdown(sock,SHUT_RDWR);
-    close(sock);
     
     return EXIT_SUCCESS;
 }
