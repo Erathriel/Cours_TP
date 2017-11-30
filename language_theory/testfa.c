@@ -17,7 +17,6 @@ int main (int argc, char *argv[]) {
     fa_set_state_initial(&test, 3);
     fa_set_state_final(&test, 3);
     fa_set_state_final(&test, 4);
-    // Uniquement avec un caractère minuscule à modifier plus tard...
     fa_add_transition(&test, 0,'a',1);
     fa_add_transition(&test, 0,'b',2);
     fa_add_transition(&test, 1,'a',2);
@@ -56,7 +55,7 @@ int main (int argc, char *argv[]) {
 
         fa_remove_state(&test,2);
 
-        fa_pretty_print(&test, fichier);
+        //fa_pretty_print(&test, fichier);
 
 
         /*struct graph g;
