@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
      // reception du nom envoye par le client
      n = recv(newsockfd,buffer,(TAILLE-1),0);
      if (n < 0) error("ERROR reading from socket");
-     printf("Bonjour %s\n",buffer); 
-     char buffer2[TAILLE+50] = {"Le serveur répond : Bonjour "};
+     printf("Le serveur va répondre : Bonjour %s\n",buffer); 
+     char buffer2[TAILLE+50] = {"Bonjour "};
      strcat(buffer2, buffer);
      // renvoie du message du serveur au client
      n = send(newsockfd,buffer2,strlen(buffer2),0); 

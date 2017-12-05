@@ -1,0 +1,64 @@
+Q11 : 
+
+La commande : "netstat -ptn" permet d'afficher les ports utilisés par les sockets locales en modes connecté, ainsi que le nom des programmes qui les utilisent.
+
+Exemple :
+
+gnoro@pc292:~$ netstat -ptn
+(Tous les processus ne peuvent être identifiés, les infos sur les processus
+non possédés ne seront pas affichées, vous devez être root pour les voir toutes.)
+Connexions Internet actives (sans serveurs)
+Proto Recv-Q Send-Q Adresse locale          Adresse distante        Etat       PID/Program name
+tcp        0      0 172.20.128.99:36142     172.20.255.90:3128      TIME_WAIT   -               
+tcp        0      0 172.20.128.99:36154     172.20.255.90:3128      TIME_WAIT   -               
+tcp        0      0 172.20.128.99:54268     172.20.128.253:389      ESTABLISHED -               
+tcp        0      0 172.20.128.99:36138     172.20.255.90:3128      ESTABLISHED 2945/firefox    
+tcp        0      0 172.20.128.99:54362     172.20.128.253:389      ESTABLISHED -               
+tcp        0      0 172.20.128.99:54344     172.20.128.253:389      ESTABLISHED -               
+tcp        0      0 172.20.128.99:36136     172.20.255.90:3128      ESTABLISHED 2945/firefox    
+tcp        0      0 172.20.128.99:54342     172.20.128.253:389      ESTABLISHED -               
+tcp        0      0 172.20.128.99:54278     172.20.128.253:389      ESTABLISHED -               
+tcp        0      0 172.20.128.99:36134     172.20.255.90:3128      ESTABLISHED 2945/firefox    
+tcp6       1      0 ::1:44654               ::1:631                 CLOSE_WAIT  -               
+
+Q12 :
+
+Les états sont :
+		ESTABLISHED
+              La socket a une connexion établie.
+
+       SYN_SENT
+              La socket attend activement d'établir une connexion.
+
+       SYN_RECV
+              Une requête de connexion a été reçue du réseau.
+
+       FIN_WAIT1
+              La  socket est fermée, et la connexion est en cours de terminai‐
+              son.
+       FIN_WAIT2
+              La connexion est fermée, et la socket attend une terminaison  du
+              distant.
+
+       TIME_WAIT
+              La socket attend le traitement de tous les paquets encore sur le
+              réseau avant d'entreprendre la fermeture.
+
+       CLOSE  
+       		  La socket n'est pas utilisée.
+
+       CLOSE_WAIT
+              Le distant a arrêté, attendant la fermeture de la socket.
+       LAST_ACK
+              Le distant termine, et la socket est fermée. Attente d'acquitte‐
+              ment.
+
+       LISTEN La socket est à l'écoute de connexions entrantes. Ces sockets ne
+              sont affichées que si le paramètre -a,--listening est fourni.
+
+       CLOSING
+              Les deux prises sont arrêtées mais toutes  les  données  locales
+              n'ont pas encore été envoyées.
+
+       UNKNOWN
+              L'état de la prise est inconnu.
