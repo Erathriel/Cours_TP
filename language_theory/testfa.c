@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "fa.h"
 
 int main (int argc, char *argv[]) {
@@ -55,14 +56,14 @@ int main (int argc, char *argv[]) {
 
         fa_remove_state(&test,2);
 
-        //fa_pretty_print(&test, fichier);
+        fa_pretty_print(&test, fichier);
 
 
-        /*struct graph g;
+        struct graph g;
         g.size = 3;
-        g.transition = calloc(g.size,sizeof(struct state));
+        g.transition = calloc(g.size,sizeof(bool));
         for(int i=0; i<g.size;i++) {
-            g.transition[i] = calloc(g.size, sizeof(struct state));
+            g.transition[i] = calloc(g.size, sizeof(bool));
         }
 
         for(int i=0; i<g.size;i++) {
@@ -83,9 +84,9 @@ int main (int argc, char *argv[]) {
 
         if (graph_has_path(&g, 0, 2)) {
             printf("chemin \n");
-        }*/
+        }
 
-      /* struct graph g2;
+       struct graph g2;
         graph_create_from_fa(&g2, &test, true);
 
         if (graph_has_path(&g2, 1, 3)) {
@@ -93,15 +94,27 @@ int main (int argc, char *argv[]) {
         }
 
     if(fa_is_language_empty(&test)) {
-        printf("Langage non vide");
+        printf("Langage non vide \n");
     }
     else {
-        printf("Langage vide");
-    }*/
+        printf("Langage vide \n");
+    }
 
-   // fa_destroy(&test);
+    // DEBUG : fonction create
+    for (int i = 0; i < g2.size; ++i)
+    {
+        for (int j = 0; j < g2.size; ++j)
+        {
+            printf(" :: %d \n", g2.transition[i][j] );
+        }
+    }
+    
+    
+    graph_destroy(&g2);
 
-    //graph_destroy(&g2);
+    fa_destroy(&test);
+    
+
 
     return 0;
 }

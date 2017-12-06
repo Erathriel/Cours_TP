@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "fa.h"
 
 //
@@ -33,7 +34,7 @@ void fa_destroy(struct fa *self) {
             free(self->transitions[i][j].states);
         }
     }
-    for (size_t i=0;i<self->state_count;i++){
+    for (int i=0;i<self->state_count;i++){
         free(self->transitions[i]);
     }
     free(self->transitions);
@@ -63,7 +64,6 @@ void fa_remove_transition(struct fa *self,size_t from, char alpha, size_t to) {
     self->transitions[from][(int)alpha-(int)'a'].size--;
 }
 
-// BUG : Find the bug
 void fa_remove_state(struct fa *self, size_t state){
     for (int i = 0; i < self->state_count; ++i)
     {
@@ -71,18 +71,23 @@ void fa_remove_state(struct fa *self, size_t state){
         {
             unsigned char c = (unsigned char) (j+'a');
             fa_remove_transition(self, state, c, i);
+            if (i<state && self->transitions[i][j].states[state]==1)
+            {
+                fa_remove_transition(self, i, c, state);
+                fa_add_transition(self, i, c, state+1);
+            }
         }
     }
-    // a commenter pour nd soluce
-    for (int i = state; i < self->state_count-1; ++i)
+    // a commenter pour 2nd soluce
+    /*for (int i = state; i < self->state_count-1; ++i)
     {
         self->states[i]=self->states[i+1];
         for (int j = 0; j < self->alpha_count; ++j)
         {
             self->transitions[i][j].states = self->transitions[i+1][j].states;
         }
-    }
-    self->state_count--;
+    }*/
+    //self->state_count--;
 }
 
 size_t fa_count_transitions(const struct fa *self){
@@ -287,19 +292,15 @@ bool graph_has_path(const struct graph *self,  size_t from, size_t to) {
 
 void graph_create_from_fa(struct graph *self, const struct fa *fa , bool inverted) {
     self->size = fa->state_count;
-    printf("test\n");
-    self->transition = calloc(self->size, sizeof(struct state));
-    printf("test2\n");
+    self->transition = calloc(self->size, sizeof(size_t));
     for (int i = 0; i < self->size; i++) {
-        self->transition[i] = calloc(self->size, sizeof(struct state));
-        printf("test3\n");
+        self->transition[i] = calloc(self->size, sizeof(bool));
     }
-    for (int i = 0; i < self->size; i++) {
+    for (int i = 0; i < self->size-1; i++) {
         for (int j = 0; j < fa->alpha_count; j++) {
-            for (int k = 0; k < self->size; k++) {
+            for (int k = 0; k < self->size-1; k++) {
                 if (fa->transitions[i][j].states[k] == 1) {
                     self->transition[i][k] = true;
-                    printf("test4\n");
                 }
             }
         }
@@ -310,7 +311,7 @@ void graph_destroy(struct graph *self) {
     if (self->transition == NULL) {
         return;
     }
-    for (size_t i=0;i<self->size;i++){
+    for (int i=0;i<self->size;i++){
         free(self->transition[i]);
     }
     free(self->transition);
@@ -320,7 +321,7 @@ void graph_destroy(struct graph *self) {
 bool fa_is_language_empty(const struct fa *self) {
     struct graph g;
     graph_create_from_fa(&g, self, true);
-    printf("1");
+    printf("1\n");
     for (int i = 0; i < self->state_count; i++) {
         if (self->states[i].is_initial == true ) {
             printf("i : %d \n", i);
@@ -328,7 +329,7 @@ bool fa_is_language_empty(const struct fa *self) {
                 if (self->states[j].is_final == true) {
                     printf("j : %d \n", j);
                    if(graph_has_path(&g, i, j)) {
-                       printf("4");
+                       printf("4\n");
                        return true;
                    }
                 }
