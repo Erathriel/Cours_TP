@@ -10,7 +10,7 @@ SRCALGO_OBJ = $(SRCDIR)/fa.o $(SRCDIR)/testfa.o
 
 RUNTESTS_OBJ = tests/src/gtest-all.o tests/faTestUnit.o run_tests.o
 
-all: libalgo.a test
+all: libalgo.a compil test
 
 test: run_tests
 	./run_tests
@@ -28,6 +28,7 @@ clean:
 mrproper: clean
 	rm -f libalgo.a
 	rm -f run_tests
+	rm -f testfa
 
 ARCHIVEDIR = biblialgo
 
@@ -38,3 +39,6 @@ archive: clean
 	cp -r include lib tests Makefile run_tests.cc $(ARCHIVEDIR)
 	tar zcvf $(ARCHIVEDIR).tar.gz $(ARCHIVEDIR)
 	rm -rf $(ARCHIVEDIR)
+
+compil: 
+	gcc src/fa.o src/testfa.o -o testfa 

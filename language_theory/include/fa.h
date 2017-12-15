@@ -10,6 +10,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct state {
     bool is_initial;
     bool is_final;
@@ -67,4 +71,8 @@ void fa_pretty_print(const struct fa *self, FILE *out);
 
 bool fa_is_language_empty(const struct fa *self);
 
+
+#ifdef __cplusplus
+}
+#endif
 #endif //TP1TL_FA_H

@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "fa.h"
+#include "../include/fa.h"
 
 int main (int argc, char *argv[]) {
     struct fa test;
