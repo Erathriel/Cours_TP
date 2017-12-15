@@ -253,3 +253,34 @@ TEST(faTest, createDestroyGraphFromFa){
 	fa_destroy(&test);
 }
 
+// Test parcours profondeur
+TEST(faTest, depthFirstSearch){
+	struct fa test;
+	struct graph g;
+
+	fa_create(&test,2,3);
+	fa_add_transition(&test,0,'a',1);
+
+	graph_create_from_fa(&g, &test, true);
+	//graph_depth_first_search(&g, 1, visited);
+
+	graph_destroy(&g);
+	fa_destroy(&test);
+}
+
+// Test chemin existant ou non
+TEST(faTest, hasPath){
+	struct fa test;
+	struct graph g;
+
+	fa_create(&test,2,3);
+	fa_add_transition(&test,0,'a',1);
+	graph_create_from_fa(&g, &test, true);
+	EXPECT_TRUE(graph_has_path(&g, 0, 1));
+	EXPECT_TRUE(graph_has_path(&g, 0, 0));
+	EXPECT_FALSE(graph_has_path(&g, 0, 2));
+
+
+	graph_destroy(&g);
+	fa_destroy(&test);	
+}
