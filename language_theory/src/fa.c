@@ -5,7 +5,7 @@
 #include "../include/fa.h"
 
 //
-// Created by Antoine on 15/09/2017.
+// Created by Antoine Pegeot and Geoffrey Noro on 15/09/2017.
 //
 void fa_create(struct fa *self, size_t alpha_count, size_t state_count) {
     self->alpha_count = alpha_count;

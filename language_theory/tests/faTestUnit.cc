@@ -1,6 +1,10 @@
 #include "../include/fa.h"
 #include "include/gtest/gtest.h"
 
+//
+// Created by Antoine Pegeot and Geoffrey Noro on 01/12/2017.
+//
+
 // Test creation et destruction d'un automate
 TEST(faTest, faCreateDestroy){
 	struct fa test;

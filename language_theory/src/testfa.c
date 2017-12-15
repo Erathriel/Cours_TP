@@ -1,5 +1,5 @@
 //
-// Created by Antoine on 15/09/2017.
+// Created by Antoine Pegeot and Geoffrey Noro on 15/09/2017.
 //
 
 
