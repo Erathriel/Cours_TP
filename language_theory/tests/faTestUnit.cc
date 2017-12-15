@@ -1,11 +1,6 @@
 #include "../include/fa.h"
 #include "include/gtest/gtest.h"
 
-/*TEST(test, test){
-	EXPECT_TRUE(true);
-}
-*/
-
 TEST(faTest, faCreateDestroy){
 	struct fa test;
 
@@ -65,3 +60,65 @@ TEST(faTest, setFinalInitialState){
 	fa_destroy(&test);
 }
 
+TEST(faTest, addTransition){
+	struct fa test;
+
+	fa_create(&test,2,3);
+
+	fa_add_transition(&test, 0,'b',2);
+
+	EXPECT_EQ(test.transitions[0][1].size,1);
+	EXPECT_EQ(test.transitions[0][0].size,0);
+	EXPECT_EQ(test.transitions[2][0].size,0);
+	EXPECT_EQ(test.transitions[2][1].size,0);
+	EXPECT_EQ(test.transitions[0][1].capacity,3);
+	EXPECT_EQ(test.transitions[0][0].capacity,0);
+	EXPECT_EQ(test.transitions[2][1].capacity,0);
+	EXPECT_EQ(test.transitions[2][0].capacity,0);
+	EXPECT_EQ(test.transitions[0][0].states[2],0);
+	EXPECT_EQ(test.transitions[0][1].states[2],1);
+	EXPECT_EQ(test.transitions[2][0].states[0],0);
+	EXPECT_EQ(test.transitions[2][1].states[0],0);
+
+	fa_add_transition(&test, 0,'a',2);
+
+	EXPECT_EQ(test.transitions[0][0].size,1);
+	EXPECT_EQ(test.transitions[0][0].states[2],1);
+	EXPECT_EQ(test.transitions[0][0].capacity,3);
+
+
+	fa_add_transition(&test, 0,'a',0);
+
+	EXPECT_EQ(test.transitions[0][0].size,2);
+	EXPECT_EQ(test.transitions[0][0].states[0],1);
+	EXPECT_EQ(test.transitions[0][0].capacity,3);
+
+
+	fa_add_transition(&test, 2,'a',0);
+	EXPECT_EQ(test.transitions[2][0].size,1);
+	EXPECT_EQ(test.transitions[2][0].states[0],1);
+	EXPECT_EQ(test.transitions[2][0].capacity,3);
+
+
+	fa_destroy(&test);
+}
+
+TEST(faTest, removeTransition){
+	struct fa test;
+
+	fa_create(&test,2,3);
+
+	fa_add_transition(&test, 0,'a',2);
+	
+	fa_remove_transition(&test, 0,'a',2);
+
+	EXPECT_EQ(test.transitions[0][0].size,0);
+	EXPECT_EQ(test.transitions[0][0].states[2],0);
+	EXPECT_EQ(test.transitions[0][0].capacity,3);
+
+	fa_destroy(&test);
+}
+
+TEST(faTest, removeState){
+
+}
