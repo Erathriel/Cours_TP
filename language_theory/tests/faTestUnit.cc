@@ -152,3 +152,64 @@ TEST(faTest, countTransition){
 
 	fa_destroy(&test);		
 }
+
+TEST(faTest, deterministic){
+	struct fa test;
+
+    fa_create(&test,2,3);
+    fa_add_transition(&test,0,'a',1);
+    fa_add_transition(&test,0,'a',2);
+
+    EXPECT_FALSE(fa_is_deterministic(&test));
+
+    fa_remove_transition(&test,0,'a',2);
+    fa_add_transition(&test,0,'b',2);
+
+    EXPECT_TRUE(fa_is_deterministic(&test));
+
+    fa_destroy(&test);
+}
+
+TEST(faTest, complete){
+	struct fa test2;
+
+	fa_create(&test2,1,2);
+
+	fa_add_transition(&test2,0,'a',1);
+	fa_add_transition(&test2,1,'a',0);
+	EXPECT_TRUE(fa_is_complete(&test2));
+
+	fa_destroy(&test2);
+	fa_create(&test2,1,2);
+
+	fa_add_transition(&test2,0,'a',1);
+	EXPECT_FALSE(fa_is_complete(&test2));
+
+	fa_destroy(&test2);
+
+}
+
+TEST(faTest, makeComplete){
+	struct fa test2;
+
+	fa_create(&test2,1,2);
+
+	fa_add_transition(&test2,0,'a',1);
+	fa_add_transition(&test2,1,'a',0);
+
+	fa_make_complete(&test2);
+
+	EXPECT_TRUE(fa_is_complete(&test2));
+
+	fa_destroy(&test2);
+
+	/*fa_create(&test2,1,2);
+
+	fa_add_transition(&test2,0,'a',1);
+
+	fa_make_complete(&test2);
+
+	EXPECT_TRUE(fa_is_complete(&test2));
+
+	fa_destroy(&test2);*/
+}

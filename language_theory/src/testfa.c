@@ -42,7 +42,7 @@ int main (int argc, char *argv[]) {
         }
         else{
             printf("N'est pas complet\n");
-        }
+        }*/
 
         fa_make_complete(&test);
 
@@ -52,7 +52,7 @@ int main (int argc, char *argv[]) {
         }
         else{
             printf("N'est pas complet\n");
-        }*/
+        }
 
         fa_remove_state(&test,2);
 

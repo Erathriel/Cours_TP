@@ -176,10 +176,10 @@ bool fa_is_complete(const struct fa *self) {
             if (countTransitionLetter<1)
             {
                 complete=false;
-                return complete;
             }
         }
     }
+    return complete;
 }
 
 void fa_make_complete(struct fa *self) {
@@ -214,15 +214,15 @@ void fa_make_complete(struct fa *self) {
                                     if (self->transitions[i][j].states[k]==1)
                                     {
                                         countTransitionLetter++;
-                    }
-                    s=k;
-                }
-                if (countTransitionLetter<1)
-                {
-                    fa_add_transition(self, i,(char)(j+97),self->state_count-1);
-                }
-            }
-        }
+                                    }
+                                    s=k;
+                                }
+                                if (countTransitionLetter<1)
+                                {
+                                    fa_add_transition(self, i,(char)(j+97),self->state_count-1);
+                                }
+                            }
+                        }
     }
 }
 
@@ -336,3 +336,181 @@ bool fa_is_language_empty(const struct fa *self) {
     }
     return false;
 }
+
+void fa_remove_non_accessible_states(struct fa *self) {
+    bool accessible = false;
+    struct graph g;
+    graph_create_from_fa(&g, self, true);
+    for (int i = 0; i < self->state_count; i++) {
+        accessible = false;
+        for(int j = 0; j < self->state_count; j++) {
+            if (self->states[j].is_initial == true ) {
+                if (graph_has_path(&g, j, i)) {
+                    accessible = true;
+                }
+            }
+        }
+        if(!accessible) {
+            fa_remove_state(self, i);
+        }
+    }
+}
+
+void fa_remove_non_co_accessible_states(struct fa *self) {
+    bool coaccessible = false;
+    struct graph g;
+    graph_create_from_fa(&g, self, true);
+    for (int j = 0; j < self->state_count; j++) {
+        coaccessible = false;
+        for(int i = 0; i < self->state_count; i++) {
+            if (self->states[i].is_final == true ) {
+                if (graph_has_path(&g, j, i)) {
+                    coaccessible = true;
+                }
+            }
+        }
+        if(!coaccessible) {
+            fa_remove_state(self, j);
+        }
+    }
+}
+
+void fa_create_product(struct fa *self, const struct fa *lhs, const struct fa *rhs) {
+    self->alpha_count = lhs->alpha_count;
+    self->state_count = lhs->state_count * rhs->state_count;
+    self->states = calloc(self->state_count, sizeof(struct state));
+    self->transitions = calloc(self->state_count, sizeof(struct state_set));
+    for (int i = 0; i < self->state_count; i++) {
+        self->transitions[i] = calloc(self->alpha_count, sizeof(struct state_set));
+        for (int j = 0; j < lhs->alpha_count; j++) {
+            self->transitions[i][j].states = calloc(self->state_count, sizeof(size_t));
+        }
+    }
+    for (int k = 0; k < lhs->state_count; k++) {
+        for (int l = 0; l < lhs->alpha_count; l++) {
+            for (int m = 0; m < lhs->state_count; m++) {
+                if (lhs->transitions[k][l].states[m] == 1) {
+                    for (int n = 0; n < rhs->state_count; n++) {
+                        for (int o = 0; o < rhs->state_count; o++) {
+                            if (rhs->transitions[n][l].states[o] == 1) {
+                                printf("transition : %d %c %d \n", (k * (rhs->state_count) + n), (char)(97+l), (m * (rhs->state_count) + o));
+                                fa_add_transition(self, (k * (rhs->state_count) + n), (char)(97+l), (m * (rhs->state_count) + o));
+                                if (rhs->states[n].is_initial && lhs->states[k].is_initial) {
+                                    self->states[(k * (rhs->state_count) + n)].is_initial = true;
+                                }
+                                if (rhs->states[o].is_final && lhs->states[m].is_final) {
+                                    self->states[(m * (rhs->state_count) + o)].is_final = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+bool fa_has_empty_intersection(const struct fa *lhs, const struct fa *rhs) {
+    struct fa intersection;
+    fa_create_product(&intersection, lhs, rhs);
+    for (int a = 0; a < intersection.state_count; a++) {
+        for (int b = 0; b < intersection.alpha_count; b++) {
+            for (int c = 0; c < intersection.state_count; c++) {
+                if (intersection.transitions[a][b].states[c] == 1) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+/*void fa_create_deterministic(struct fa *self, const struct fa *nfa) {
+    int nbstep = 0;
+    int nbused = 0;
+    struct state_set *stateset = calloc(nfa->state_count, sizeof(struct state_set));
+    for(int j=0; j<nfa->state_count;j++){
+        stateset[j].states=calloc(nfa->state_count, sizeof(size_t));
+    }
+    for (int j = 0; j < nfa->alpha_count; j++) {
+    for (int i = 0; i < nfa->state_count; i++) {
+        if(nfa->states[i].is_initial) {
+            stateset[nbstep].states[i] = 1;
+            if (j == nfa->alpha_count-1) {
+            nbstep++; }
+                    for (int l = 0; l < nfa->state_count; l++) {
+                        if (nfa->transitions[i][j].states[l]==1) {
+                            stateset[nbstep].states[l]=1;
+                            stateset[nbstep].capacity= (size_t) j;
+                        }
+                    }
+            nbstep++;
+                }
+        }
+
+    }
+
+    bool used = false;
+    for (int k = 1; k < nbstep-1; k++) {
+        nbused = 0;
+        if (nbstep > 3) {
+        for(int r = 0; r < k; r++) {
+            used = true;
+                for(int t = 0; t < nfa->state_count; t++) {
+                    for(int u = 0; u < nfa->state_count; u++) {
+                        if(stateset[k].states[t] != stateset[r].states[u]) {
+                            used = false;
+                        }
+                    }
+                }
+            if (used == true) {
+                nbused++;
+            }}
+        }
+        if(nbused <1) {
+            for (int p = 0; p < nfa->alpha_count; p++) {
+            for (int n = 0; n < nfa->state_count; n++) {
+                if (stateset[k].states[n] == 1) {
+                            for (int q = 0; q < nfa->state_count; q++) {
+                                if (nfa->transitions[n][p].states[q] == 1) {
+                                    stateset[nbstep].states[q] == 1;
+                                    stateset[nbstep].capacity == p;
+                                }
+                            }
+            }
+
+
+        }
+                nbused = 0;
+                for (int r = 0; r < k; r++) {
+                    used = true;
+                    for (int t = 0; t < nfa->state_count; t++) {
+                        for (int u = 0; u < nfa->state_count; u++) {
+                            if (stateset[nbstep].states[t] != stateset[r].states[u]) {
+                                used = false;
+                            }
+                        }
+                    }
+                    if (used == true) {
+                        nbused++;
+                    }
+                }
+
+                if (nbused < 1) {
+                    nbstep++;
+                } else {
+                    stateset[nbstep].capacity == 0;
+                    for (int t = 0; t < nfa->state_count; t++) {
+                        stateset[nbstep].states[t] == 0;
+                    }
+                }
+            }
+        }
+        printf("k : %d & nb step : %d \n", k, nbstep);
+        }
+
+    fa_create(self, 2, (size_t) nbstep);
+
+
+
+}*/
