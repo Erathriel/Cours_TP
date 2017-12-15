@@ -1,6 +1,7 @@
 #include "../include/fa.h"
 #include "include/gtest/gtest.h"
 
+// Test creation et destruction d'un automate
 TEST(faTest, faCreateDestroy){
 	struct fa test;
 
@@ -19,6 +20,7 @@ TEST(faTest, faCreateDestroy){
 	fa_destroy(&test);
 }
 
+// Test configurer un etat initial
 TEST(faTest, setInitialState){
 	struct fa test;
 
@@ -32,6 +34,7 @@ TEST(faTest, setInitialState){
 	fa_destroy(&test);
 }
 
+// Test configurer un etat final
 TEST(faTest, setFinalState){
 	struct fa test;
 
@@ -45,6 +48,7 @@ TEST(faTest, setFinalState){
 	fa_destroy(&test);
 }
 
+// Test configurer un etat initial et final
 TEST(faTest, setFinalInitialState){
 	struct fa test;
 
@@ -60,6 +64,7 @@ TEST(faTest, setFinalInitialState){
 	fa_destroy(&test);
 }
 
+// Test ajout de transition
 TEST(faTest, addTransition){
 	struct fa test;
 
@@ -103,6 +108,7 @@ TEST(faTest, addTransition){
 	fa_destroy(&test);
 }
 
+// Test suppression de transition
 TEST(faTest, removeTransition){
 	struct fa test;
 
@@ -135,6 +141,7 @@ TEST(faTest, removeState){
 	fa_destroy(&test);
 }
 
+// Test du comptage du nombre de transition
 TEST(faTest, countTransition){
 	struct fa test;
 
@@ -153,6 +160,7 @@ TEST(faTest, countTransition){
 	fa_destroy(&test);		
 }
 
+// Test verification du determinisme d'un automate
 TEST(faTest, deterministic){
 	struct fa test;
 
@@ -170,6 +178,7 @@ TEST(faTest, deterministic){
     fa_destroy(&test);
 }
 
+// Test verifie si un automate est complet ou non
 TEST(faTest, complete){
 	struct fa test2;
 
@@ -189,6 +198,7 @@ TEST(faTest, complete){
 
 }
 
+// Test rendre un automate complet
 TEST(faTest, makeComplete){
 	struct fa test2;
 
@@ -213,3 +223,33 @@ TEST(faTest, makeComplete){
 
 	fa_destroy(&test2);*/
 }
+
+// creation et destruction de graphe
+TEST(faTest, createDestroyGraphFromFa){
+	struct fa test;
+	struct graph g;
+
+	fa_create(&test,2,3);
+
+	graph_create_from_fa(&g, &test, true);
+	EXPECT_EQ(g.size,3);
+	for (int i = 0; i < g.size; ++i)
+	{
+		for (int j = 0; j < g.size; ++j)
+		{
+			EXPECT_FALSE(g.transition[i][j]);
+		}
+	}
+	graph_destroy(&g);
+	fa_destroy(&test);
+
+	fa_create(&test,2,3);
+	fa_add_transition(&test,0,'a',1);
+
+	graph_create_from_fa(&g, &test, true);
+	EXPECT_TRUE(g.transition[0][1]);
+
+	graph_destroy(&g);
+	fa_destroy(&test);
+}
+

@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = -Wall -O2 -g -Iinclude -std=c99
 
 CXX = c++
-CXXFLAGS = -Wall -O2 -g -Iinclude -Itests -Itests/include
+CXXFLAGS = -Wall -O2 -g -Iinclude -Itests -Itests/include 
 
 SRCDIR = src
 
