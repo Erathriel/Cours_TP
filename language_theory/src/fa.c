@@ -328,7 +328,8 @@ bool fa_is_language_empty(const struct fa *self) {
         if (self->states[i].is_initial == true ) {
             for (int j = 0; j < self->state_count; j++) {
                 if (self->states[j].is_final == true) {
-                   if(graph_has_path(&g, i, j)) {                       return true;
+                   if(!graph_has_path(&g, i, j)) {                       
+                    return true;
                    }
                 }
             }

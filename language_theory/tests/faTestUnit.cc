@@ -262,7 +262,7 @@ TEST(faTest, depthFirstSearch){
 	fa_add_transition(&test,0,'a',1);
 
 	graph_create_from_fa(&g, &test, true);
-	//graph_depth_first_search(&g, 1, visited);
+	//graph_depth_first_search(&g, 1, true);
 
 	graph_destroy(&g);
 	fa_destroy(&test);
@@ -283,4 +283,22 @@ TEST(faTest, hasPath){
 
 	graph_destroy(&g);
 	fa_destroy(&test);	
+}
+
+TEST(faTest, languageEmpty){
+	struct fa test;
+
+	fa_create(&test,2,3);
+	fa_add_transition(&test,0,'a',1);
+	EXPECT_FALSE(fa_is_language_empty(&test));
+
+	fa_destroy(&test);
+
+	fa_create(&test,2,3);
+	fa_set_state_initial(&test,0);
+	fa_set_state_final(&test,1);
+
+	EXPECT_TRUE(fa_is_language_empty(&test));
+
+	fa_destroy(&test);
 }
