@@ -70,7 +70,10 @@ void fa_remove_state(struct fa *self, size_t state){
         for (int j = 0; j < self->alpha_count; ++j)
         {
             unsigned char c = (unsigned char) (j+'a');
-            fa_remove_transition(self, state, c, i);
+            if (self->transitions[state][j].states[i] != 0)
+            {
+                fa_remove_transition(self, state, c, i);          
+            }
             /*if (i<state && self->transitions[i][j].states[state]==1)
             {
                 fa_remove_transition(self, i, c, state);
@@ -79,7 +82,7 @@ void fa_remove_state(struct fa *self, size_t state){
         }
     }
     // a commenter pour 2nd soluce
-    for (int i = state; i < self->state_count-1; ++i)
+    /*for (int i = state; i < self->state_count-1; ++i)
     {
         self->states[i]=self->states[i+1];
         for (int j = 0; j < self->alpha_count; ++j)
@@ -87,7 +90,7 @@ void fa_remove_state(struct fa *self, size_t state){
             self->transitions[i][j].states = self->transitions[i+1][j].states;
         }
     }
-    self->state_count--;
+    self->state_count--;*/
 }
 
 size_t fa_count_transitions(const struct fa *self){
@@ -321,16 +324,11 @@ void graph_destroy(struct graph *self) {
 bool fa_is_language_empty(const struct fa *self) {
     struct graph g;
     graph_create_from_fa(&g, self, true);
-    printf("1\n");
     for (int i = 0; i < self->state_count; i++) {
         if (self->states[i].is_initial == true ) {
-            printf("i : %d \n", i);
             for (int j = 0; j < self->state_count; j++) {
                 if (self->states[j].is_final == true) {
-                    printf("j : %d \n", j);
-                   if(graph_has_path(&g, i, j)) {
-                       printf("4\n");
-                       return true;
+                   if(graph_has_path(&g, i, j)) {                       return true;
                    }
                 }
             }

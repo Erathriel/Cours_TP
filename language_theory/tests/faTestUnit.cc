@@ -120,5 +120,35 @@ TEST(faTest, removeTransition){
 }
 
 TEST(faTest, removeState){
+	struct fa test;
 
+	fa_create(&test,2,3);
+
+	fa_add_transition(&test, 0,'a',1);
+	fa_add_transition(&test, 0,'b',2);
+	fa_add_transition(&test, 2,'a',1);
+
+	fa_remove_state(&test,2);
+	EXPECT_EQ(test.transitions[2][0].size,0);
+	EXPECT_EQ(test.transitions[2][0].states[1],0);
+
+	fa_destroy(&test);
+}
+
+TEST(faTest, countTransition){
+	struct fa test;
+
+	fa_create(&test,2,3);
+	int i = fa_count_transitions(&test);
+	EXPECT_EQ(i,0);
+
+	fa_add_transition(&test, 0,'a',2);
+	i = fa_count_transitions(&test);
+	EXPECT_EQ(i,1);
+
+	fa_remove_transition(&test, 0,'a',2);
+	i = fa_count_transitions(&test);
+	EXPECT_EQ(i,0);
+
+	fa_destroy(&test);		
 }

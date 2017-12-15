@@ -99,15 +99,6 @@ int main (int argc, char *argv[]) {
     else {
         printf("Langage vide \n");
     }
-
-    // DEBUG : fonction create
-    for (int i = 0; i < g2.size; ++i)
-    {
-        for (int j = 0; j < g2.size; ++j)
-        {
-            printf(" :: %d \n", g2.transition[i][j] );
-        }
-    }
     
     
     graph_destroy(&g2);
