@@ -118,3 +118,115 @@ print("reverseStr function \n")
 print(palyndrome("abba"))
 print(palyndrome("toto"))
 print("\n------------------------ \n")
+
+# plus long mot d'une phrase
+
+def longerWord(string):
+	liste = string.split()
+	longer = liste[0]
+	for i in liste:
+		if len(i)>= len(longer):
+			longer = i
+	return longer		
+
+print("longerWord function \n")
+print(longerWord("Je suis grand"))
+print("\n------------------------ \n")
+
+# si la phrase est un pangramme
+
+def pangramme(string):
+	alphabet="abcdefghijklmnopqrstuvwxyz"
+	for i in alphabet:
+		if i not in string.lower():
+			return False
+	return True
+
+print("Pangramme function \n")
+print(pangramme("Portez ce vieux whisky au juge blond qui fume"))
+print("\n------------------------ \n")
+
+def chiffrementCesar(cle, string):
+	encrypt=""
+	for i in string.upper():
+		a = ord(i) + (cle%26)
+		if a > 90:
+			encrypt = encrypt + chr(64+(a-90))
+		elif ord(i) == 32:
+			encrypt += i
+		elif ord(i) == 10:
+			encrypt += i
+		else:
+			encrypt = encrypt + chr(a)
+	return encrypt
+
+print("chiffrementCesar function \n")
+print(chiffrementCesar(3,"BONJOUR LES AMIS"))
+print("\n------------------------ \n")
+
+def dechiffrementCesar(cle, string):
+	encrypt=""
+	for i in string.upper():
+		a = ord(i) - (cle%26)
+		if a > 32 and a<65:
+			encrypt = encrypt + chr(90-(64-a))
+		elif ord(i) == 32:
+			encrypt += i
+		elif ord(i) == 10:
+			encrypt += i
+		else:
+			encrypt = encrypt + chr(a)
+	return encrypt
+
+print("dechiffrementCesar function \n")
+print(dechiffrementCesar(3,"ERQMRXU OHV DPLV"))
+print("\n------------------------ \n")
+
+def chiffrementVigenere( message, cle) :
+    encrypt= ""
+    compteur=0
+    for i,c in enumerate(message) :
+    	if c == " ":
+    		encrypt += " "
+    		compteur += 1
+    	else:
+	        d = cle[ (i+compteur) % len(cle) ]
+	        d = ord(d) - 65
+	        encrypt += chr((ord(c)-65+d)%26+65)
+    return encrypt
+
+print("chiffrementVigenere function \n")
+print(chiffrementVigenere("BONJOUR LES AMIS", "CA"))
+print("\n------------------------ \n")
+
+def dechiffrementVigenere( message, cle) :
+    encrypt= ""
+    compteur=0
+    for i,c in enumerate(message) :
+    	if c == " ":
+    		encrypt += " "
+    		compteur += 1
+    	else:
+	        d = cle[ (i+compteur) % len(cle) ]
+	        d = ord(d) - 65
+	        d = 26-d
+	        encrypt += chr((ord(c)-65+d)%26+65)
+    return encrypt
+
+print("dechiffrementVigenere function \n")
+print(dechiffrementVigenere("DOPJQUT LGS CMKS", "CA"))
+print("\n------------------------ \n")
+
+def chiffreRomain(nb):
+	romain = ["M","CM","D","CD","C","XC","L","VL","XL","X","IX","V","IV","I"]
+	nombre = [1000,900,500,400,100,90,50,45,40,10,9,5,4,1]
+	newNb = ""
+	for i in range(len(romain)):
+		while nb>= nombre[i]:
+			newNb += romain[i]
+			nb -= nombre[i]
+	return newNb
+
+print("chiffreRomain \n")
+print(chiffreRomain(41))
+print("\n------------------------ \n")
