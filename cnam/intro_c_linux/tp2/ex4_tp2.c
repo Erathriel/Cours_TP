@@ -4,6 +4,10 @@
 #include <time.h>
 #include <pthread.h>
 
+int calculMediane(int* tab, int nbDeValeur){
+
+}
+
 int main(int argc, char const *argv[])
 {
 	if(argc<2)
