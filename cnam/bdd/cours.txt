@@ -1,0 +1,48 @@
+BD la plus connue -> Excel -> requete statique
+
+1er SGBD -> requete dynamique !
+
+IBM -> SGBD Hierarchique créer par la NASA
+
+General electric et general motors -> SGBD maillé
+
+SGBD relationnel CODD ( entité, relation, etc....)
+
+MCD -> SQL -> MLD
+
+étudier syteme d'information  existant :
+
+	- consulter cahier des charges existant
+	- consulter les docs transitant dans l'organisme
+	- interviews des membres de l'organisme
+	- interviews des utilisateurs ( externes )
+	- etc ....
+
+avoir une idée rigoureusement exacte de l'existant, etc ... en bref tout ce qui marche et qui ne marche pas
+
+données utiles à sauvegarder
+
+DD ( dictionnaire de donnée ) ensemble de donnée utile
+
+DD simplifié : enlever champs redondant, champs calculs otés, créer identifiant
+
+
+
+
+
+Démarche MCT :
+
+1- determiner la liste des entites
+2- pour chaque entites la cle
+	a- la liste des attributs
+	b- parmis ceux-ci def un identifiant
+3- determiner les relations entre entites
+4- pour chaque relation il faut :
+	a- dresser la liste des attributs propre à la relation
+	b- verifier la dimension
+	c- les cardinalites ( 1-1, 1-n, 0-n, 0-1)
+5- verifier le schema
+	a- supprimé les transitivite
+	b- s'assurer que le schema est connexe
+	c- s'assurer qu'il reponde aux demande
+6- valider avec les utilisateurs 
