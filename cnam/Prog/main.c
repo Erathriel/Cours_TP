@@ -16,12 +16,13 @@ int main(int argc, char const *argv[])
 	//vigenereDecrypt(sentance,key);
 	
 	return 0;*/
- 	int maVar;
 
- 	printf("Entrez une valeur : \n");
- 	scanf("%d", &maVar);
+	int a,b;
+ 	printf("choisir a : \n");
+ 	scanf("%d", &a);
+ 	printf("choisir b : \n");
+ 	scanf("%d", &b);
 
- 	printf("Ma variable = %d \n", maVar);
- 	return 0;
+	printf("resultat de a + b = %d \n", addition(a,b));
 
 }

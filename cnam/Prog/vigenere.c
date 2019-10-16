@@ -37,3 +37,9 @@ void vigenereDecrypt(char* text, char* key){
 	}
 	printf("\n");
 }
+
+int addition(int a, int b){
+	int resultat;
+ 	resultat = a + b;
+ 	return resultat;
+}
