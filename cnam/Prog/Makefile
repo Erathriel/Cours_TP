@@ -1,3 +1,3 @@
 compil:
-	gcc vigenere.c -c -std=c99
-	gcc vigenere.o -o vigenere
+	gcc main.c -c -std=c99
+	gcc main.o -o vigenere
