@@ -1,4 +1,3 @@
-#include "ex4.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -42,6 +41,7 @@ int main(int argc, char const *argv[])
 
 		printf("%s\n", str1);
 		printf("%s\n", str2);
+	}
 
 	return 0;
 }
