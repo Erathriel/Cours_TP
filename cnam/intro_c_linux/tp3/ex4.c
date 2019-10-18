@@ -22,6 +22,11 @@ int main(int argc, char const *argv[])
 		str1 = argv[1];
 		str2 = argv[2];
 
+		/*for (int i = 0; i < sizeof(str2); ++i)
+		{
+			printf("%c", str2[i]);
+		}*/
+
 		if (sizeof(str1) == sizeof(str2))
 		{
 			for (int i = 0; i < sizeof(str1); ++i)
@@ -39,8 +44,8 @@ int main(int argc, char const *argv[])
 			printf("Tailles différentes\n");
 		}
 
-		printf("%s\n", str1);
-		printf("%s\n", str2);
+		/*printf("%s\n", str1);
+		printf("%s\n", str2);*/
 	}
 
 	return 0;
