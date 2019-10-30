@@ -128,6 +128,7 @@ void returnMenu(){
 	}
 }
 
+// count the number of char in the file
 int countChar(){
 	char *namePath;
 	namePath=malloc(sizeof(char)*256);
@@ -157,12 +158,14 @@ int countChar(){
 	return nbChar;
 }
 
+// return the size in bits of the file
 int taille(){
 	int nbChar = countChar();
 	int taille = nbChar * 8;
 	return taille;
 }
 
+// create a file with which data do you want
 void creer(){
 	char *namePath;
 	char *msg;
