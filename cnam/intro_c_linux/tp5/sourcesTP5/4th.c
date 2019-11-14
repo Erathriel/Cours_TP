@@ -8,7 +8,12 @@ char *messages[NUM_THREADS];
 
 void *AfficheMessage(void *threadid)
 {
-   
+	int *i = (int *) threadid;
+	int num = *i;
+	printf("Je suis dans le thread %d \n", num);
+	printf("Mon message est : %s \n", messages[num]);
+	fflush(stdout);
+	pthread_exit(NULL);
 }
 
 int main(int argc, char *argv[])

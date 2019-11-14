@@ -15,7 +15,7 @@ EXEC = 2th Echec_thread
 # $? liste des dependances plus recente que la cible
 # $* nom du fichier sans suffixe
 
-all: 2th Echec_thread
+all: 2th Echec_thread 4th
 
 2th: 2th.o
 	@$(cco) $@ $< $(ldflags)
@@ -27,6 +27,12 @@ Echec_thread: Echec_thread.o
 	@$(cco) $@ $< $(ldflags)
 
 Echec_thread.o: Echec_thread.c
+	@$(cc) -o $@ $< $(cflags)
+
+4th: 4th.o
+	@$(cco) $@ $< $(ldflags)
+
+4th.o: 4th.c
 	@$(cc) -o $@ $< $(cflags)
 
 clean:
