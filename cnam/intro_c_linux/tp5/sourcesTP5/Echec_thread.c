@@ -23,13 +23,13 @@ int main(void) {
 			
 void *fonction_thread (void * arg) {
 	printf("Hello world !\n");
-	#ifdef __LINUX
+	#ifdef __LINUX__
 		char *os = "A true OS";
 		printf("%s\n", os);
 		getchar();
 		system("clear");
 	#endif
-	#ifdef __WINDOWS
+	#ifdef WIN32
 		char *os = "A blue screen";
 		printf("%s\n", os);
 		system("PAUSE");
