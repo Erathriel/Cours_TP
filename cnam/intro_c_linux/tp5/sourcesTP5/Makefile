@@ -7,7 +7,7 @@ ldflags = -lpthread
 #flags pour le gcc -c
 cflags = -Wall -std=c99
 # liste des executables
-EXEC = 2th Echec_thread
+EXEC = 2th Echec_thread 4th
 
 # $@ nom de la cible
 # $< nom de la premiere dependance
