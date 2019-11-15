@@ -7,7 +7,7 @@ ldflags = -lpthread
 #flags pour le gcc -c
 cflags = -Wall -std=c99
 # liste des executables
-EXEC = exemple calcul prg4
+EXEC = exemple calcul prg4 prg1
 
 # $@ nom de la cible
 # $< nom de la premiere dependance
@@ -15,12 +15,18 @@ EXEC = exemple calcul prg4
 # $? liste des dependances plus recente que la cible
 # $* nom du fichier sans suffixe
 
-all: calcul exemple prg4
+all: calcul exemple prg4 prg1
 
 prg4: prg4.o
 	@$(cco) $@ $< $(ldflags)
 
 prg4.o: prg4.c
+	@$(cc) $< $(cflags)
+
+prg1: prg1.o
+	@$(cco) $@ $< $(ldflags)
+
+prg1.o: prg1.c
 	@$(cc) $< $(cflags)
 
 calcul: calcul.o
