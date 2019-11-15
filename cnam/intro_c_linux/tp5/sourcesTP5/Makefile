@@ -29,9 +29,6 @@ EXEC = 2th Echec_thread 4th
 # 	ifeq ($(UNAME_S),Linux)
 # 		OSFLAG += -D LINUX
 # 	endif
-# 	ifeq ($(UNAME_S),Darwin)
-# 		OSFLAG += -D OSX
-# 	endif
 # 	UNAME_P := $(shell uname -p)
 # 	ifeq ($(UNAME_P),x86_64)
 # 		OSFLAG += -D AMD64
@@ -46,25 +43,34 @@ EXEC = 2th Echec_thread 4th
 
 # $(cflags) += $(OSFLAG)
 
+# commande qui fonctionne
+#gcc -o Echec_thread Echec_thread.c -Wall -std=c99 -D LINUX -lpthread
+
+ifeq ($(OS),Linux)
+	cflags := -D LINUX
+endif
+echo:
+	echo $(cflags)
+
 all: 2th Echec_thread 4th
 
 2th: 2th.o
 	@$(cco) $@ $< $(ldflags)
 
 2th.o: 2th.c
-	@$(cc) -o $@ $< $(cflags)
+	@$(cc) $< $(cflags)
 
 Echec_thread: Echec_thread.o
 	@$(cco) $@ $< $(ldflags)
 
 Echec_thread.o: Echec_thread.c
-	@$(cc) -o $@ $< $(cflags)
+	@$(cc) $< $(cflags)
 
 4th: 4th.o
 	@$(cco) $@ $< $(ldflags)
 
 4th.o: 4th.c
-	@$(cc) -o $@ $< $(cflags)
+	@$(cc) $< $(cflags)
 
 clean:
 	@rm -f *.o

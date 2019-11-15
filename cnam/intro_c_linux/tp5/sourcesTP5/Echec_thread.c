@@ -23,7 +23,7 @@ int main(void) {
 			
 void *fonction_thread (void * arg) {
 	printf("Hello world !\n");
-	#ifdef __LINUX__
+	#ifdef LINUX
 		char *os = "A true OS";
 		printf("%s\n", os);
 		getchar();
