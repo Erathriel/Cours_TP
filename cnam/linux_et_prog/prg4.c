@@ -20,16 +20,16 @@ int main(int argc, char const *argv[])
 	if (fork()==0)
 	{ // Le fils
 		printf("FILS is running\n");
-		close(fd[0]);
-		dup2(fd[1],STDOUT_FILENO);
-		close(fd[1]);
+		close(fd[0]); // fermeture du descripteur de lecture du tube
+		dup2(fd[1],STDOUT_FILENO); // remplacer la sortie standard par le descripteur d'ecriture du tube
+		close(fd[1]);// fermeture du descripteur d'ecriture inutile
 		execl("/bin/ls","ls",NULL);{ erreurFin("pb sur exec ls"); }
 	}
 	else{
 		printf("PERE is running\n");
-		close(fd[1]);
-		dup2(fd[0],STDIN_FILENO);
-		close(fd[0]);
+		close(fd[1]);// fermeture du descripteur d'ecriture
+		dup2(fd[0],STDIN_FILENO);// remplacer l'entrée standard par le descripteur de lecture du tube
+		close(fd[0]);// fermeture du descripteur de lecture du tube inutile
 		execl("/usr/bin/wc","wc","-l",NULL);{ erreurFin("pb sur exec wc"); };
 	}
 	return 0;
