@@ -12,7 +12,7 @@ void *AfficheMessage(void *threadid)
 	int num = *i;
 	printf("Je suis dans le thread %d \n", num);
 	printf("Mon message est : %s \n", messages[num]);
-	fflush(stdout);
+	//fflush(stdout);
 	pthread_exit(NULL);
 }
 
@@ -44,7 +44,8 @@ for(t=0;t<NUM_THREADS;t++) {
     printf("Erreur Creation Threads %d\n", rc);
     exit(-1);
     }
+    pthread_join(threads[t],NULL);
   }
 
-pthread_exit(NULL);
+  pthread_exit(NULL);
 }
