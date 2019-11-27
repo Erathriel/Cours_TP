@@ -7,7 +7,7 @@ ldflags = -lpthread
 #flags pour le gcc -c
 cflags = -Wall -std=c99
 # liste des executables
-EXEC = 2th Echec_thread 4th
+EXEC = 2th Echec_thread 4th Trois_Thread mult
 
 # $@ nom de la cible
 # $< nom de la premiere dependance
@@ -46,7 +46,7 @@ cflags += $(OSFLAG)
 # commande qui fonctionne pour compiler selon l'os !
 #gcc -o Echec_thread Echec_thread.c -Wall -std=c99 -D LINUX -lpthread
 
-all: 2th Echec_thread 4th
+all: 2th Echec_thread 4th Trois_Thread mult
 
 2th: 2th.o
 	@$(cco) $@ $< $(ldflags)
@@ -64,6 +64,18 @@ Echec_thread.o: Echec_thread.c
 	@$(cco) $@ $< $(ldflags)
 
 4th.o: 4th.c
+	@$(cc) $< $(cflags)
+
+Trois_Thread: Trois_Thread.o
+	@$(cco) $@ $< $(ldflags)
+
+Trois_Thread.o: Trois_Thread.c
+	@$(cc) $< $(cflags)
+
+mult: mult.o
+	@$(cco) $@ $< $(ldflags)
+
+mult.o: mult.c
 	@$(cc) $< $(cflags)
 
 clean:

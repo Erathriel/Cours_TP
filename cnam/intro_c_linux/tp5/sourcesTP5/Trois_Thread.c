@@ -4,6 +4,8 @@
     
 /* Trois_Th.c */ 
 #include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 int compteur[3];
  
@@ -27,7 +29,7 @@ int main(void) {
 		printf("Main: thread numero %d creee: id = %d\n", 
 			num,pth_id[num]);
 	} 
-	usleep(10000);	/* attente de 10 ms *//
+	usleep(10000);	/* attente de 10 ms */
 	/* Affichage des compteurs (20 fois): entre 2 affichages, les compteurs peuvent avoir ete incrementes */ 
 	printf("Affichage des compteurs\n");
 	for (i = 0; i < 20; i++) {
