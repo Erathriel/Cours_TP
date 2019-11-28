@@ -49,14 +49,15 @@ int main(void)
 		case (pid_t) 0: /* Fils */
 			close(tube[1]);	/* Fermeture en ecriture */
 			close(tube2[0]);
+			// lecture du fils
 			if (printf("Je suis le fils de PID %d\n Lecture dans le tube : %s\n Nbr Caracteres lus: %d\n",getpid(), buffer, ret_in =read(tube[0], buffer, NBCAR - 1)) == -1) 
 			{
 				erreur(" Pb Lecture ");
 				exit(EXIT_FAILURE);
 			}
+			// ecriture dans le tube
 			strcpy(buffer, "Je passe dans le tube2");
 			fprintf(stdout, "Je suis le fils de PID %d\n Ecriture dans le Tube : %s\n Taille du buffer %d\n",getpid(), buffer, NBCAR);
-			//fprintf(stdout, "\nNombre de caractere ecrit dans le Tube %d\n", ret_out = write(tube2[1], buffer, NBCAR));
 			if (fprintf(stdout, "\nNombre de caractere ecrit dans le Tube %d\n", ret_out = write(tube2[1], buffer, NBCAR)) == -1) 
 			{
 				erreur(" Pb Ecriture ");
@@ -70,6 +71,7 @@ int main(void)
 		default:			/* Pere */
 			close(tube[0]);		/* Fermeture en lecture */
 			close(tube2[1]);
+			// ecriture du pere
 			strcpy(buffer, "Je passe dans le tube1");
 			fprintf(stdout,"Je suis le Pere de PID %d\n Ecriture dans le Tube : %s\n Taille du buffer %d\n",getpid(), buffer, NBCAR);
 			if (fprintf(stdout, "\tNombre de caractere ecrit dans le Tube %d\n",ret_out = write(tube[1], buffer, NBCAR)) == -1) 
@@ -77,6 +79,7 @@ int main(void)
 				erreur(" Pb Ecriture ");
 				exit(EXIT_FAILURE);
 			}
+			// lecture du pere
 			if(printf("Je suis le père de PID %d\n Lecture dans le tube : %s\n Nbr Caracteres lus: %d\n",getpid(), buffer, ret_in =read(tube2[0], buffer, NBCAR - 1)) == -1)
 			{
 			 	erreur("Pb lecture père");
