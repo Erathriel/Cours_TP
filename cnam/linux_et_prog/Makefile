@@ -7,7 +7,7 @@ ldflags = -lpthread
 #flags pour le gcc -c
 cflags = -Wall -std=c99
 # liste des executables
-EXEC = exemple calcul prg4 prg1 sig sig2 sig3
+EXEC = exemple calcul prg4 prg1 sig sig2 sig3 sig4
 
 # $@ nom de la cible
 # $< nom de la premiere dependance
@@ -43,7 +43,7 @@ endif
 
 cflags += $(OSFLAG)
 
-all: calcul exemple prg4 prg1 sig sig2 sig3
+all: calcul exemple prg4 prg1 sig sig2 sig3 sig4
 
 prg4: prg4.o
 	@$(cco) $@ $< $(ldflags)
@@ -85,6 +85,12 @@ sig3: sig3.o
 	@$(cco) $@ $< $(ldflags)
 
 sig3.o: sig3.c
+	@$(cc) $< $(cflags)
+
+sig4: sig4.o
+	@$(cco) $@ $< $(ldflags)
+
+sig4.o: sig4.c
 	@$(cc) $< $(cflags)
 
 clean:
