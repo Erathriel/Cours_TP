@@ -33,9 +33,9 @@ else
 	ifeq ($(UNAME_P),x86_64)
 		OSFLAG += -D AMD64
 	endif
-		ifneq ($(filter %86,$(UNAME_P)),)
-	OSFLAG += -D IA32
-		endif
+	ifneq ($(filter %86,$(UNAME_P)),)
+		OSFLAG += -D IA32
+	endif
 	ifneq ($(filter arm%,$(UNAME_P)),)
 		OSFLAG += -D ARM
 	endif
