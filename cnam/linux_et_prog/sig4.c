@@ -54,7 +54,6 @@ int main(int argc, char const *argv[])
 			printf("sortie attente\n");
 			for (int i = 0; i < 100; ++i);
 			printf("Infos traitée\n");
-			//wait(SIGCHLD);
 	}
 
 	return 0;
