@@ -31,12 +31,12 @@ int main(int argc, char const *argv[])
 	pid_t pid;
 
 	//signal(SIGINT,message1);
-	struct sigaction action; // struct qui remplace signal(SIGINT,message1);
+	struct sigaction s; // struct qui remplace signal(SIGINT,message1);
 
-	action.sa_handler = message1; // init du traitant
-	sigemptyset(&(action.sa_mask));	// masque de traitant
-	action.sa_flag=0; // pas de flag
-	sigaction(SIGINT, &action,NULL); // installation du traitant pour le signal SIGINT
+	s.sa_handler = message1; // init du traitant
+	sigemptyset(&(s.sa_mask));	// masque de traitant
+	s.sa_flags=0; // pas de flag
+	sigaction(SIGINT, &s,NULL); // installation du traitant pour le signal SIGINT
 
 	pid=fork();
 

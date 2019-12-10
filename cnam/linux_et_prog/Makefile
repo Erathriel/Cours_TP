@@ -6,6 +6,8 @@ cco = gcc -o
 ldflags = -lpthread
 #flags pour le gcc -c
 cflags = -Wall -std=c99
+# flags pour les signaux POSIX
+sigflag = -D_POSIX_C_SOURCE
 # liste des executables
 EXEC = exemple calcul prg4 prg1 sig sig2 sig3 sig4
 
@@ -73,25 +75,31 @@ sig: sig.o
 	@$(cco) $@ $< $(ldflags)
 
 sig.o: sig.c
-	@$(cc) $< $(cflags)
+	@$(cc) $< $(cflags) $(sigflag)
 
 sig2: sig2.o
 	@$(cco) $@ $< $(ldflags)
 
 sig2.o: sig2.c
-	@$(cc) $< $(cflags)
+	@$(cc) $< $(cflags) $(sigflag)
 
 sig3: sig3.o
 	@$(cco) $@ $< $(ldflags)
 
 sig3.o: sig3.c
-	@$(cc) $< $(cflags)
+	@$(cc) $< $(cflags) $(sigflag)
 
 sig4: sig4.o
-	@$(cco) $@ $< $(ldflags)
+	@$(cco) $@ $< $(ldflags) 
 
 sig4.o: sig4.c
-	@$(cc) $< $(cflags)
+	@$(cc) $< $(cflags) $(sigflag)
+
+sig5: sig5.o
+	@$(cco) $@ $< $(ldflags) 
+
+sig5.o: sig5.c
+	@$(cc) $< $(cflags) $(sigflag)
 
 clean:
 	@rm -f *.o
