@@ -1,6 +1,6 @@
 /****************************************************
 |													|
-|			Fichier : prg4.c						|
+|			Fichier : sig.c							|
 |			Auteur : NORO Geoffrey					|
 |													|
 ****************************************************/
@@ -14,8 +14,14 @@
 void message1(int n){
 	if (n == SIGQUIT)
 	{
+		printf("%d\n",n );
 		printf("SIGQUIT recu \n)");
 		exit(1);
+	}
+	else{
+		printf("%d\n",n );
+		printf("SIGINT reçu \n");
+		exit(2);
 	}
 }
 

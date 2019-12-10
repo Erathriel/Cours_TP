@@ -79,4 +79,5 @@ clean:
 	@rm -f *.o
 
 mrproper: clean
+	clear
 	@rm -rf $(EXEC)
