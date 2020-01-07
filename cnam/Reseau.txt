@@ -1,3 +1,5 @@
 1ere methode : formel espace restreint ( echequier, theorie math. qui peut prouver qu'on va gagner )
 2eme methode : IA ( methode par loi regle )
 3eme methode : Heuristique
+
+Compression conservatrice(PNG pour les images) et compression non conservatrice(JPEG pour les images)
