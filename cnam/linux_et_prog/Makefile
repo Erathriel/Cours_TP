@@ -9,7 +9,7 @@ cflags = -Wall -std=c99
 # flags pour les signaux POSIX
 sigflag = -D_POSIX_C_SOURCE
 # liste des executables
-EXEC = exemple calcul prg4 prg1 sig sig2 sig3 sig4
+EXEC = exemple calcul prg4 prg1 sig sig2 sig3 sig4 sig5 P0
 
 # $@ nom de la cible
 # $< nom de la premiere dependance
@@ -45,7 +45,7 @@ endif
 
 cflags += $(OSFLAG)
 
-all: calcul exemple prg4 prg1 sig sig2 sig3 sig4
+all: calcul exemple prg4 prg1 sig sig2 sig3 sig4 sig5 P0
 
 prg4: prg4.o
 	@$(cco) $@ $< $(ldflags)
@@ -75,31 +75,37 @@ sig: sig.o
 	@$(cco) $@ $< $(ldflags)
 
 sig.o: sig.c
-	@$(cc) $< $(cflags) $(sigflag)
+	@$(cc) $< $(sigflag)
 
 sig2: sig2.o
 	@$(cco) $@ $< $(ldflags)
 
 sig2.o: sig2.c
-	@$(cc) $< $(cflags) $(sigflag)
+	@$(cc) $< $(sigflag)
 
 sig3: sig3.o
 	@$(cco) $@ $< $(ldflags)
 
 sig3.o: sig3.c
-	@$(cc) $< $(cflags) $(sigflag)
+	@$(cc) $< $(sigflag)
 
 sig4: sig4.o
 	@$(cco) $@ $< $(ldflags) 
 
 sig4.o: sig4.c
-	@$(cc) $< $(cflags) $(sigflag)
+	@$(cc) $< $(sigflag)
 
 sig5: sig5.o
 	@$(cco) $@ $< $(ldflags) 
 
 sig5.o: sig5.c
-	@$(cc) $< $(cflags) $(sigflag)
+	@$(cc) $< $(sigflag)
+
+P0: P0.o
+	@$(cco) $@ $< 
+
+P0.o: P0.c
+	@$(cc) $<
 
 clean:
 	@rm -f *.o

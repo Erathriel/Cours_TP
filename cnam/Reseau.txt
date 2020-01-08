@@ -3,3 +3,5 @@
 3eme methode : Heuristique
 
 Compression conservatrice(PNG pour les images) et compression non conservatrice(JPEG pour les images)
+
+cryptage différent de signature

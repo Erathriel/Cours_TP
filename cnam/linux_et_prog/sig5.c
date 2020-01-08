@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
 	}
 
 	/* Mise en place du masque avec sauvegarde de l'ancien masque dans la variable anciens */
-	sigprocmask(SIG_SETMASK,&masque,&anciens):
+	sigprocmask(SIG_SETMASK,&masque,&anciens);
 
 	/* on s'endort */
 	fflush(stdout);
@@ -45,7 +45,7 @@ int main(int argc, char const *argv[])
 	sigpending(&pendants);
 
 	/* Decodage des signaux pendants */
-	for (int i = 0; i < NSIG; ++i)
+	for (int i = 0; i < NB_SIGNAUX; ++i)
 	{
 		if (sigismember(&pendants,i))
 		{
