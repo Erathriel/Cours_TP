@@ -5,6 +5,8 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include <sys/wait.h>
+
 
 typedef struct
 {
@@ -52,7 +54,7 @@ int main(int argc, char const *argv[])
     {
 	    case (pid_t) 0:
 	    	printf("...\n");
-			/*requete.type=1;
+			requete.type=1;
 			requete.pidEmetteur=getpid();
 			printf("Nombre 1 :\n");
 			scanf("%d",&requete.nb_un);
@@ -61,35 +63,36 @@ int main(int argc, char const *argv[])
 			//requete.nb_un=1;
 			//requete.nb_deux=2;
 			
-			if (msgsnd(msgid,&requete,sizeof(trequeteClient) - sizeof(long),0)){
+			if (msgsnd(msgid,&requete,sizeof(trequeteClient) - sizeof(long),0) == -1){
 				perror("Erreur de ecriture fils requete \n");
 				exit(1);
 			}
 			printf("Requête envoyée par le client.\n");
-			if(msgrcv(msgid,&reponse,sizeof(treponse) - sizeof(long),getpid(),0)){
+			/*if(msgrcv(msgid,&reponse,sizeof(treponse) - sizeof(long),getpid(),0) == -1){
 				perror("Erreur de lecture fils requete \n");
 				exit(1);
 			}
-			printf("Le Resultat est : %d \n",reponse.res);*/
-	    //default:
-	    	printf("...2\n");
+			printf("Le Resultat est : %d \n",reponse.res); */
+			exit(0);
+	    default:
 		    /* Lecture de la requête */
-		    while (1) {
-
-				/*if ((longMSG = msgrcv(msgid, &requete, sizeof(trequeteClient) - sizeof(long), 1,0)) == -1) {
+		    wait(NULL);
+				
+				if ((longMSG = msgrcv(msgid, &requete, sizeof(trequeteClient) - sizeof(long), 1,0)) == -1) {
+				    printf("valeur de retour : %d \n ", longMSG);
 				    perror("Erreur de lecture pere requete \n");
 				    exit(1);
 				}
+				printf("nb 1 %d\n", requete.nb_un);
+				printf("nb 2 %d\n", requete.nb_deux);
 
-				reponse.res = requete.nb_un + requete.nb_deux;
-				reponse.type = requete.pidEmetteur;
+				//reponse.res = requete.nb_un + requete.nb_deux;
+				//reponse.type = requete.pidEmetteur;
 
-				if (msgsnd(msgid, &reponse, sizeof(treponse) - sizeof(long),0) == -1) {
+				/*if (msgsnd(msgid, &reponse, sizeof(treponse) - sizeof(long),0) == -1) {
 				    perror("Erreur de ecriture pere requete \n");
 				    exit(1);
 				}*/
-		    }
-		    wait(NULL);
 
     }
 	/* A tester */  
