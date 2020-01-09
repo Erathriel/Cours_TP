@@ -8,3 +8,16 @@ si(s.val<0) alors						|	si (s.val<=0) alors
 	mettre process en attente 			|		reveille 1er process en attente
 	dormir								|	fdsi
 fsi										|
+
+
+panier <- 20
+cabine <- 10
+
+si panier == 0
+	p(s1)
+sinon
+	panier--
+
+si cabine == 0
+	p(s2)
+	
