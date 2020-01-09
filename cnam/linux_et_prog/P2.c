@@ -18,10 +18,23 @@ void erreur(const char *msg){
 	exit(1);
 }
 
-typedef
+typedef struct 
+{
+	long type;
+	pid_t numPID;
+} tMessage;
 
 int main(int argc, char const *argv[])
 {
-	
+	int msgid, tailleMsg;
+	tMessage req, rep;
+
+	tailleMsg = sizeof(tMessage) - sizeof(long);
+
+	if (argc-1 != 0)
+	{
+		
+	}
+
 	return 0;
 }
