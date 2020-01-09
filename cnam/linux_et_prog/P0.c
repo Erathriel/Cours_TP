@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
 		perror("Erreur de creation de la file\n");
 		exit(1);
     }
-    switch(pid==fork())
+    switch(pid=fork())
     {
 	    case (pid_t) 0:
 	    	printf("...\n");
@@ -68,32 +68,31 @@ int main(int argc, char const *argv[])
 				exit(1);
 			}
 			printf("Requête envoyée par le client.\n");
-			/*if(msgrcv(msgid,&reponse,sizeof(treponse) - sizeof(long),getpid(),0) == -1){
+			//sleep(20);
+			if(msgrcv(msgid,&reponse,sizeof(treponse) - sizeof(long),getpid(),0) == -1){
 				perror("Erreur de lecture fils requete \n");
 				exit(1);
 			}
-			printf("Le Resultat est : %d \n",reponse.res); */
+			printf("Le Resultat est : %d \n",reponse.res); 
 			exit(0);
 	    default:
 		    /* Lecture de la requête */
+			if ((longMSG = msgrcv(msgid, &requete, sizeof(trequeteClient) - sizeof(long), 1,0)) == -1) {
+				printf("valeur de retour : %d \n ", longMSG);
+				perror("Erreur de lecture pere requete \n");
+				exit(1);
+			}
+			printf("nb 1 %d\n", requete.nb_un);
+			printf("nb 2 %d\n", requete.nb_deux);
+
+			reponse.res = requete.nb_un + requete.nb_deux;
+			reponse.type = requete.pidEmetteur;
+
+			if (msgsnd(msgid, &reponse, sizeof(treponse) - sizeof(long),0) == -1) {
+				perror("Erreur de ecriture pere requete \n");
+				exit(1);
+			}
 		    wait(NULL);
-				
-				if ((longMSG = msgrcv(msgid, &requete, sizeof(trequeteClient) - sizeof(long), 1,0)) == -1) {
-				    printf("valeur de retour : %d \n ", longMSG);
-				    perror("Erreur de lecture pere requete \n");
-				    exit(1);
-				}
-				printf("nb 1 %d\n", requete.nb_un);
-				printf("nb 2 %d\n", requete.nb_deux);
-
-				//reponse.res = requete.nb_un + requete.nb_deux;
-				//reponse.type = requete.pidEmetteur;
-
-				/*if (msgsnd(msgid, &reponse, sizeof(treponse) - sizeof(long),0) == -1) {
-				    perror("Erreur de ecriture pere requete \n");
-				    exit(1);
-				}*/
-
     }
 	/* A tester */  
 	msgctl(msgid, IPC_RMID, NULL);

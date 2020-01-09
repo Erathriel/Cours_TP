@@ -75,31 +75,31 @@ sig: sig.o
 	@$(cco) $@ $< $(ldflags)
 
 sig.o: sig.c
-	@$(cc) $< $(sigflag)
+	@$(cc) $< $(cflags) $(sigflag)
 
 sig2: sig2.o
 	@$(cco) $@ $< $(ldflags)
 
 sig2.o: sig2.c
-	@$(cc) $< $(sigflag)
+	@$(cc) $< $(cflags) $(sigflag)
 
 sig3: sig3.o
 	@$(cco) $@ $< $(ldflags)
 
 sig3.o: sig3.c
-	@$(cc) $< $(sigflag)
+	@$(cc) $< $(cflags) $(sigflag)
 
 sig4: sig4.o
 	@$(cco) $@ $< $(ldflags) 
 
 sig4.o: sig4.c
-	@$(cc) $< $(sigflag)
+	@$(cc) $< $(cflags) $(sigflag)
 
 sig5: sig5.o
 	@$(cco) $@ $< $(ldflags) 
 
 sig5.o: sig5.c
-	@$(cc) $< $(sigflag)
+	@$(cc) $< $(cflags) $(sigflag)
 
 P0: P0.o
 	@$(cco) $@ $< 
