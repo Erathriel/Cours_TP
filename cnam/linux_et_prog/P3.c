@@ -21,13 +21,13 @@ void erreur(const char *msg){
 typedef struct 
 {
 	long type;
-	pid_t numPID;
+	int valeur;
 } tMessage;
 
 int main(int argc, char const *argv[])
 {
 	int msgid, tailleMsg;
-	tMessage req, rep;
+	tMessage req;
 
 	tailleMsg = sizeof(tMessage) - sizeof(long);
 
@@ -36,17 +36,25 @@ int main(int argc, char const *argv[])
 		fprintf(stderr, "Appel %s \n", argv[0]);
 		exit(1);
 	}
-	if ((msgid = msget(cle, 0)) == -1)
+	if ((msgid = msgget(cle,0)) == -1)
 	{
 		erreur("pb msgget dans P3");
 	}
-	
+
 	// construction requete message
 
+	req.type=getpid();
+	req.valeur=3;
+
 	// envoi requete message
+	if (msgsnd(msgid,&req,tailleMsg,0) == -1){
+		perror("Erreur de ecriture P3 requete \n");
+		exit(1);
+	}
+	printf("Valeur envoyé par P3\n");
 
 	// reception requete rep
 
-	printf("P3 mon pid %d, son pid %d \n", getpid(), rep.numPID);
+	//printf("P3 mon pid %d, son pid %d \n", getpid(), rep.numPID);
 	return 0;
 }
