@@ -33,8 +33,20 @@ int main(int argc, char const *argv[])
 
 	if (argc-1 != 0)
 	{
-		
+		fprintf(stderr, "Appel %s \n", argv[0]);
+		exit(1);
+	}
+	if ((msgid = msget(cle, 0)) == -1)
+	{
+		erreur("pb msgget dans P2");
 	}
 
+	// construction requete message
+
+	// envoi requete message
+
+	// reception requete rep
+
+	printf("P2 mon pid %d, son pid %d \n", getpid(), rep.numPID);
 	return 0;
 }
