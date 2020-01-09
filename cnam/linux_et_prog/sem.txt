@@ -1,0 +1,10 @@
+Semaphore : s
+entier : s.val // compteur
+FileAttente : attente
+
+P(s)									|							V(s)
+s.val<-s.val-1							|	s.val<-s.val+1
+si(s.val<0) alors						|	si (s.val<=0) alors
+	mettre process en attente 			|		reveille 1er process en attente
+	dormir								|	fdsi
+fsi										|
