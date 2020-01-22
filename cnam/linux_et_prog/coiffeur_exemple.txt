@@ -1,3 +1,12 @@
+init
+sem :
+	coupetif init à 0
+	client init à 0
+	CompteMutex init à 1
+variable :
+	Compte de type entier init à 0 (nb client)
+	N type entier init à 10 nb (fauteuil)
+
 coiffure :
 
 Debut
@@ -14,11 +23,62 @@ Client :
 debut
 
 P(CompteMutex)
-
-Si (Compte >1) alors
-
+Si compte == N alors
+	V(compteMutex)
+	//sortir
+sinon
+	V(compteMutex)
 fsi
-
-seFaireCouperCheveux()
-
+P(CompteMutex)
+Compte++
 V(CompteMutex)
+P(CompteMutex)
+Si (Compte > 1) alors
+	V(CompteMutex)
+	P(Client)
+sinon
+	V(CompteMutex)
+fsi
+V(Coupetif)
+seFaireCouperCheveux()
+P(CompteMutex)
+Si compte > 1
+	V(CompteMutex)
+	V(client)
+sinon
+	V(CompteMutex)
+fsi
+P(CompteMutex)
+compte--
+V(CompteMutex)
+
+fin
+
+client opti :
+
+debut
+
+P(CompteMutex)
+Si compte == N alors
+	//sortir
+	V(compteMutex)
+fsi
+Compte++
+V(CompteMutex)
+P(CompteMutex)
+Si (Compte > 1) alors
+	V(CompteMutex)
+	P(Client)
+sinon
+	V(CompteMutex)
+fsi
+V(Coupetif)
+seFaireCouperCheveux()
+P(CompteMutex)
+Si compte > 1
+	V(client)
+fsi
+compte--
+V(CompteMutex)
+
+fin
