@@ -1,0 +1,24 @@
+coiffure :
+
+Debut
+
+TantQue (vrai) alors
+	P(Coupetif)
+	Coiffer()
+ftq
+
+fin
+
+Client :
+
+debut
+
+P(CompteMutex)
+
+Si (Compte >1) alors
+
+fsi
+
+seFaireCouperCheveux()
+
+V(CompteMutex)
