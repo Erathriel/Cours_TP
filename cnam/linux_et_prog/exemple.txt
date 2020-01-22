@@ -16,3 +16,61 @@ int main(){
 père : 20
 fils 1 : 10
 fils 2 : 15
+
+Pseudo code semaphore :
+
+exemple piscine
+
+si ( nbCabine == 0 )alors
+	P(s) bloquage sem
+fsi
+
+// prendre cabine
+V(s)
+
+avec ça on bloque les incrementations et decrementation
+
+avec mutex :
+
+P(mutex)
+Si( nbCabine == 0 ) alors
+	V(mutex)
+	P(s)
+	P(mutex)
+fsi
+
+// prendre cabine
+
+pseudo code :
+
+semaphore : MutexC init à 1
+	S1 init à 0
+	MutexP init à 1
+	S2 init à 0
+
+Variable : NC de type entier init à 10
+	NP de type entier iniy à 10
+
+P(MutexP)
+si NP == 0 alors
+	P(S2)
+sinon
+	V(MutexP)
+fsi
+P(MutexP)
+NP--
+V(mutex)
+P(mutex)
+NP++
+V(mutex)
+
+
+
+
+
+
+
+
+
+
+
