@@ -69,9 +69,6 @@ int initsem(key_t semkey)
     } else return (semid_init);
 }
 
-void libereSem(int semnum){
-	semctl(semid,0,IPC_RMID);
-}
  
 void P(int semnum) {
 
@@ -89,6 +86,9 @@ sem_oper_V.sem_flg  = 0 ;
 semop(sem_id,&sem_oper_V,1);
 }
 
+void libereSem(int semid){
+	semctl(semid,0,IPC_RMID);
+}
  
 /* affichage pour suivi du trajet */
 void message(int i, char* s) {
@@ -160,14 +160,14 @@ int main(int argc, char *argv[])
    int i,semid;
    printf("%10s%20s%20s\n\n", "TGV", "TER", "TAXI");
   
-   semid=initsem(SKEY);
+   sem_id=initsem(SKEY);
    TGV(0);
    TER(1);
    Taxi(2);
  
    for (i=1; i<=3; i++) wait(0);
 
-   libereSem(semid); //supprime les semaphores  
+   libereSem(sem_id); //supprime les semaphores  
   
    return(0);
 }

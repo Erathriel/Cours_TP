@@ -179,16 +179,16 @@
 #include <sys/sem.h>
 
 #define NBSEM 2
-#define NC 1
-#define NP 2
-#define MUTEX_CABINE 3
-#define MUTEX_PANIER 4
+#define NC 0
+#define NP 1
+#define MUTEX_CABINE 2
+#define MUTEX_PANIER 3
 #define IFLAGS (SEMPERM | IPC_CREAT)
 #define SKEY   (key_t) IPC_PRIVATE	
 #define SEMPERM 0600		 /* Permission */
 
 
-int NbCabinesLibre = 10, NbPaniersLibre = 10;
+int NbCabinesLibre = 1, NbPaniersLibre = 2;
 // Init semaphore
 int sem_id ;
 struct sembuf sem_oper_P ;  /* Operation P */
@@ -208,7 +208,7 @@ int initsem(key_t semkey)
 	} ctl_arg;
     if ((semid_init = semget(semkey, 4, IFLAGS)) > 0) {
 		
-	    	short array[4] = {NC, NP, 1, 1}; // 4 Semaphores : cabines, paniers, mutexcabine, mutexpanier
+	    	short array[4] = {0, 0, 1, 1}; // 4 Semaphores : cabines, paniers, mutexcabine, mutexpanier
 	    	ctl_arg.array = array;
 	    	status = semctl(semid_init, 0, SETALL, ctl_arg);
     }
@@ -218,24 +218,24 @@ int initsem(key_t semkey)
     } else return (semid_init);
 }
 
-void libereSem(int semnum){
-	semctl(sem_id,0,IPC_RMID);
+void libereSem(int semid){
+	semctl(semid,0,IPC_RMID);
 }
  
 void P(int semnum) {
 
-sem_oper_P.sem_num = semnum;
-sem_oper_P.sem_op  = -1 ;
-sem_oper_P.sem_flg = 0 ;
-semop(sem_id,&sem_oper_P,1);
+	sem_oper_P.sem_num = semnum;
+	sem_oper_P.sem_op  = -1 ;
+	sem_oper_P.sem_flg = 0 ;
+	semop(sem_id,&sem_oper_P,1);
 }
 
 void V(int semnum) {
 
-sem_oper_V.sem_num = semnum;
-sem_oper_V.sem_op  = 1 ;
-sem_oper_V.sem_flg  = 0 ;
-semop(sem_id,&sem_oper_V,1);
+	sem_oper_V.sem_num = semnum;
+	sem_oper_V.sem_op  = 1 ;
+	sem_oper_V.sem_flg  = 0 ;
+	semop(sem_id,&sem_oper_V,1);
 }
 
 
@@ -244,8 +244,8 @@ void attente(int n) {
 }
 
 void Se_rhabiller(int i){
+
 	P(MUTEX_CABINE);
-	printf("se rhabiller : NbCabinesLibre : %d \n", NbCabinesLibre);
 	if (NbCabinesLibre == 0)
 	{
 		V(MUTEX_CABINE);
@@ -256,52 +256,67 @@ void Se_rhabiller(int i){
 		V(MUTEX_CABINE);
 	}
 
-	attente(3);
+	//attente(3);
 
 	P(MUTEX_CABINE);
 	NbCabinesLibre--;
-	printf("se rhabiller : NbCabinesLibre : %d \n", NbCabinesLibre);
+	printf("PID : %d se rhabiller : NbCabinesLibre : %d \n",getpid(), NbCabinesLibre);
 	V(MUTEX_CABINE);
 
-	attente(3);
+	//attente(3);
 
 	printf("PID : %d La personne se rhabille\n", getpid());
 
 	P(MUTEX_CABINE);
 	NbCabinesLibre++;
-	printf("se rhabiller : NbCabinesLibre : %d \n", NbCabinesLibre);
+	printf("PID : %d se rhabiller : NbCabinesLibre : %d \n", getpid(),NbCabinesLibre);
 	V(MUTEX_CABINE);
-	V(NC);
+	P(MUTEX_CABINE);
+	if (NbCabinesLibre > 0)
+	{
+		V(MUTEX_CABINE);
+		V(NC);
+	}
+	else{
+		V(MUTEX_CABINE);
+	}
 
-	attente(3);
+	//attente(3);
 
 
 	P(MUTEX_PANIER);
 	NbPaniersLibre++;
-	printf("se rhabiller : NbPaniersLibre : %d \n", NbPaniersLibre);
+	printf("PID : %d se rhabiller : NbPaniersLibre : %d \n",getpid(), NbPaniersLibre);
 	V(MUTEX_PANIER);
-	V(NP);
+	P(MUTEX_PANIER);
+	if (NbPaniersLibre > 0)
+	{
+		V(MUTEX_PANIER);
+		V(NP);
+	}
+	else{
+		V(MUTEX_PANIER);
+	}
 
-	attente(3);
+	//attente(3);
 
-	printf("se rhabiller fin de fonction : NbCabinesLibre : %d \n", NbCabinesLibre);
-	printf("se rhabiller fin de fonction : NbPaniersLibre : %d \n", NbPaniersLibre);
+	printf("PID : %d se rhabiller fin de fonction : NbCabinesLibre : %d \n",getpid(), NbCabinesLibre);
+	printf("PID : %d se rhabiller fin de fonction : NbPaniersLibre : %d \n",getpid(), NbPaniersLibre);
 	printf("PID : %d Je m'en vais a+\n", getpid());
 
 }
 
 void nage(){
 	int i = 0;
-	while(i<7){
+	while(i<5){
 		printf("PID : %d Je nage\n", getpid());
 		i++;
 	}
 }
 
 void se_changer(int i){
-	
+
 	P(MUTEX_PANIER);
-	printf("se changer : NbPaniersLibre : %d \n", NbPaniersLibre);
 	if (NbPaniersLibre==0)
 	{
 		V(MUTEX_PANIER);
@@ -312,17 +327,17 @@ void se_changer(int i){
 		V(MUTEX_PANIER);
 	}
 
-	attente(3);
+	//attente(5);
 
 	P(MUTEX_PANIER);
 	NbPaniersLibre--;
-	printf("se changer : NbPaniersLibre : %d \n", NbPaniersLibre);
+	printf("PID : %d se changer : NbPaniersLibre : %d \n", getpid(),NbPaniersLibre);
 	V(MUTEX_PANIER);
 
-	attente(3);
+	//attente(3);
 
 	P(MUTEX_CABINE);
-	printf("se changer : NbCabinesLibre : %d \n", NbCabinesLibre);
+	printf("PID : %d se changer : NbCabinesLibre : %d \n", getpid(),NbCabinesLibre);
 	if (NbCabinesLibre == 0)
 	{
 		V(MUTEX_CABINE);
@@ -333,46 +348,68 @@ void se_changer(int i){
 		V(MUTEX_CABINE);
 	}
 
-	attente(3);
+	//attente(3);
 
 	P(MUTEX_CABINE);
 	NbCabinesLibre--;
-	printf("se changer : NbCabinesLibre : %d \n", NbCabinesLibre);
+	printf("PID : %d se changer : NbCabinesLibre : %d \n",getpid(), NbCabinesLibre);
 	V(MUTEX_CABINE);
 
-	attente(3);
+	//attente(3);
 
 	printf("PID : %d La personne se change\n", getpid());
 
 	P(MUTEX_CABINE);
 	NbCabinesLibre++;
-	printf("se changer : NbCabinesLibre : %d \n", NbCabinesLibre);
+	printf("PID : %d se changer : NbCabinesLibre : %d \n",getpid(), NbCabinesLibre);
 	V(MUTEX_CABINE);
-	V(NC);
+	P(MUTEX_CABINE);
+	if (NbCabinesLibre > 0)
+	{
+		V(MUTEX_CABINE);
+		V(NC);
+	}
+	else{
+		V(MUTEX_CABINE);
+	}
 
-	attente(3);
-	
-	printf("se changer fin de fonction : NbCabinesLibre : %d \n", NbCabinesLibre);
-	printf("se changer fin de fonction : NbPaniersLibre : %d \n", NbPaniersLibre);
+	//attente(3);
+
+	printf("PID : %d se changer fin de fonction : NbCabinesLibre : %d \n", getpid(),NbCabinesLibre);
+	printf("PID : %d se changer fin de fonction : NbPaniersLibre : %d \n",getpid(), NbPaniersLibre);
+	printf("PID : %d Je vais nager\n", getpid());
 }
 
+
+void nageur(int i){
+	if (!fork())
+	{
+		/* code */
+		printf("PID : %d Coucou j'arrive à la piscine\n",getpid() );
+		se_changer(i);
+		nage();
+		Se_rhabiller(i);
+		exit(0);
+	}
+}
 
 
 int main(int argc, char const *argv[])
 {
-	int semid;
-	for (int i = 0; i < 3; ++i)
+	sem_id=initsem(SKEY);
+	/*for (int i = 0; i < 3; i++)
 	{
 		if (!fork())
 		{
-			printf("PID : %d Coucou j'arrive à la piscine\n",getpid() );
-			se_changer(i);
-			nage();
-			Se_rhabiller(i);
-			exit(0);
+			nageur();
 		}
-	}
+	}*/
+	nageur(0);
+	nageur(1);
+	nageur(2);
 
-    libereSem(semid); //supprime les semaphores  
+	for (int j=1; j<=3; j++) wait(0);
+
+    libereSem(sem_id); //supprime les semaphores  
 	return 0;
 }	

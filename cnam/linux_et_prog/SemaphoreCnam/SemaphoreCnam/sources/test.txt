@@ -1,72 +1,69 @@
-PID : 14098 Coucou j'arrive à la piscine
-se changer : NbPaniersLibre : 10 
-se changer : NbPaniersLibre : 9 
-se changer : NbCabinesLibre : 10 
-se changer : NbCabinesLibre : 9 
-PID : 14098 La personne se change
-se changer : NbCabinesLibre : 10 
-se changer fin de fonction : NbCabinesLibre : 10 
-se changer fin de fonction : NbPaniersLibre : 9 
-PID : 14098 Je nage
-PID : 14098 Je nage
-PID : 14098 Je nage
-PID : 14098 Je nage
-PID : 14098 Je nage
-PID : 14098 Je nage
-PID : 14098 Je nage
-se rhabiller : NbCabinesLibre : 10 
-se rhabiller : NbCabinesLibre : 9 
-PID : 14098 La personne se rhabille
-se rhabiller : NbCabinesLibre : 10 
-se rhabiller : NbPaniersLibre : 10 
-se rhabiller fin de fonction : NbCabinesLibre : 10 
-se rhabiller fin de fonction : NbPaniersLibre : 10 
-PID : 14098 Je m'en vais a+
-PID : 14097 Coucou j'arrive à la piscine
-se changer : NbPaniersLibre : 10 
-se changer : NbPaniersLibre : 9 
-se changer : NbCabinesLibre : 10 
-se changer : NbCabinesLibre : 9 
-PID : 14097 La personne se change
-se changer : NbCabinesLibre : 10 
-se changer fin de fonction : NbCabinesLibre : 10 
-se changer fin de fonction : NbPaniersLibre : 9 
-PID : 14097 Je nage
-PID : 14097 Je nage
-PID : 14097 Je nage
-PID : 14097 Je nage
-PID : 14097 Je nage
-PID : 14097 Je nage
-PID : 14097 Je nage
-se rhabiller : NbCabinesLibre : 10 
-se rhabiller : NbCabinesLibre : 9 
-PID : 14097 La personne se rhabille
-se rhabiller : NbCabinesLibre : 10 
-se rhabiller : NbPaniersLibre : 10 
-se rhabiller fin de fonction : NbCabinesLibre : 10 
-se rhabiller fin de fonction : NbPaniersLibre : 10 
-PID : 14097 Je m'en vais a+
-PID : 14096 Coucou j'arrive à la piscine
-se changer : NbPaniersLibre : 10 
-se changer : NbPaniersLibre : 9 
-se changer : NbCabinesLibre : 10 
-se changer : NbCabinesLibre : 9 
-PID : 14096 La personne se change
-se changer : NbCabinesLibre : 10 
-se changer fin de fonction : NbCabinesLibre : 10 
-se changer fin de fonction : NbPaniersLibre : 9 
-PID : 14096 Je nage
-PID : 14096 Je nage
-PID : 14096 Je nage
-PID : 14096 Je nage
-PID : 14096 Je nage
-PID : 14096 Je nage
-PID : 14096 Je nage
-se rhabiller : NbCabinesLibre : 10 
-se rhabiller : NbCabinesLibre : 9 
-PID : 14096 La personne se rhabille
-se rhabiller : NbCabinesLibre : 10 
-se rhabiller : NbPaniersLibre : 10 
-se rhabiller fin de fonction : NbCabinesLibre : 10 
-se rhabiller fin de fonction : NbPaniersLibre : 10 
-PID : 14096 Je m'en vais a+
+PID : 19802 Coucou j'arrive à la piscine
+PID : 19802 se changer : NbPaniersLibre : 2 
+se changer : NbPaniersLibre : 1 
+se changer : NbCabinesLibre : 1 
+se changer : NbCabinesLibre : 0 
+PID : 19802 La personne se change
+se changer : NbCabinesLibre : 1 
+se changer fin de fonction : NbCabinesLibre : 1 
+se changer fin de fonction : NbPaniersLibre : 1 
+PID : 19802 Je vais nager
+PID : 19802 Je nage
+PID : 19802 Je nage
+PID : 19802 Je nage
+PID : 19802 Je nage
+PID : 19802 Je nage
+PID : 19802 se rhabiller : NbCabinesLibre : 1 
+se rhabiller : NbCabinesLibre : 0 
+PID : 19802 La personne se rhabille
+se rhabiller : NbCabinesLibre : 1 
+se rhabiller : NbPaniersLibre : 2 
+se rhabiller fin de fonction : NbCabinesLibre : 1 
+se rhabiller fin de fonction : NbPaniersLibre : 2 
+PID : 19802 Je m'en vais a+
+PID : 19801 Coucou j'arrive à la piscine
+PID : 19801 se changer : NbPaniersLibre : 2 
+se changer : NbPaniersLibre : 1 
+se changer : NbCabinesLibre : 1 
+se changer : NbCabinesLibre : 0 
+PID : 19801 La personne se change
+se changer : NbCabinesLibre : 1 
+se changer fin de fonction : NbCabinesLibre : 1 
+se changer fin de fonction : NbPaniersLibre : 1 
+PID : 19801 Je vais nager
+PID : 19801 Je nage
+PID : 19801 Je nage
+PID : 19801 Je nage
+PID : 19801 Je nage
+PID : 19801 Je nage
+PID : 19801 se rhabiller : NbCabinesLibre : 1 
+se rhabiller : NbCabinesLibre : 0 
+PID : 19801 La personne se rhabille
+se rhabiller : NbCabinesLibre : 1 
+se rhabiller : NbPaniersLibre : 2 
+se rhabiller fin de fonction : NbCabinesLibre : 1 
+se rhabiller fin de fonction : NbPaniersLibre : 2 
+PID : 19801 Je m'en vais a+
+PID : 19800 Coucou j'arrive à la piscine
+PID : 19800 se changer : NbPaniersLibre : 2 
+se changer : NbPaniersLibre : 1 
+se changer : NbCabinesLibre : 1 
+se changer : NbCabinesLibre : 0 
+PID : 19800 La personne se change
+se changer : NbCabinesLibre : 1 
+se changer fin de fonction : NbCabinesLibre : 1 
+se changer fin de fonction : NbPaniersLibre : 1 
+PID : 19800 Je vais nager
+PID : 19800 Je nage
+PID : 19800 Je nage
+PID : 19800 Je nage
+PID : 19800 Je nage
+PID : 19800 Je nage
+PID : 19800 se rhabiller : NbCabinesLibre : 1 
+se rhabiller : NbCabinesLibre : 0 
+PID : 19800 La personne se rhabille
+se rhabiller : NbCabinesLibre : 1 
+se rhabiller : NbPaniersLibre : 2 
+se rhabiller fin de fonction : NbCabinesLibre : 1 
+se rhabiller fin de fonction : NbPaniersLibre : 2 
+PID : 19800 Je m'en vais a+
