@@ -69,7 +69,9 @@ int initsem(key_t semkey)
     } else return (semid_init);
 }
 
-
+void libereSem(int semnum){
+	semctl(semid,0,IPC_RMID);
+}
  
 void P(int semnum) {
 
@@ -158,12 +160,14 @@ int main(int argc, char *argv[])
    int i,semid;
    printf("%10s%20s%20s\n\n", "TGV", "TER", "TAXI");
   
-   sem_id=initsem(SKEY);
+   semid=initsem(SKEY);
    TGV(0);
    TER(1);
    Taxi(2);
  
-   for (i=1; i<=3; i++) wait(0);  
+   for (i=1; i<=3; i++) wait(0);
+
+   libereSem(semid); //supprime les semaphores  
   
    return(0);
 }
